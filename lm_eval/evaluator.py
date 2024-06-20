@@ -8,7 +8,6 @@ from collections import defaultdict
 from typing import TYPE_CHECKING, List, Optional, Union
 
 import numpy as np
-import torch
 
 import lm_eval.api.metrics
 import lm_eval.api.registry
@@ -43,6 +42,14 @@ if TYPE_CHECKING:
     from lm_eval.api.task import Task
 
 eval_logger = logging.getLogger(__name__)
+
+
+try:
+    import torch
+
+    HAS_TORCH = True
+except ImportError:
+    HAS_TORCH = False
 
 
 @positional_deprecated
@@ -188,8 +195,9 @@ def simple_evaluate(
         np.random.seed(numpy_random_seed)
 
     if torch_random_seed is not None:
-        seed_message.append(f"Setting torch manual seed to {torch_random_seed}")
-        torch.manual_seed(torch_random_seed)
+        if HAS_TORCH:
+            seed_message.append(f"Setting torch manual seed to {torch_random_seed}")
+            torch.manual_seed(torch_random_seed)
 
     if fewshot_random_seed is not None:
         seed_message.append(f"Setting fewshot manual seed to {fewshot_random_seed}")
@@ -547,6 +555,8 @@ def evaluate(
             requests[reqtype].append(instance)
 
         if lm.world_size > 1:
+            if not HAS_TORCH:
+                raise ImportError("torch is required for distributed evaluation")
             instances_rnk = torch.tensor(len(task._instances), device=lm.device)
             gathered_item = (
                 lm.accelerator.gather(instances_rnk).cpu().detach().numpy().tolist()
@@ -655,6 +665,9 @@ def evaluate(
                     task_output.sample_metrics[(metric, filter_key)].append(value)
 
     if WORLD_SIZE > 1:
+        if not HAS_TORCH:
+            raise ImportError("torch is required for distributed evaluation")
+
         # if multigpu, then gather data across all ranks to rank 0
         # first gather logged samples across all ranks
         for task_output in eval_tasks:

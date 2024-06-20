@@ -22,7 +22,33 @@ from . import (
 )
 
 
-# TODO: implement __all__
+__all__ = [
+    "anthropic_llms",
+    "dummy",
+    "gguf",
+    "openai_completions",
+    "textsynth",
+    "vllm_causallms",
+]
+
+
+# try importing all modules that need torch
+import importlib
+
+
+for module_that_needs_torch in [
+    "huggingface",
+    "mamba_lm",
+    "nemo_lm",
+    "neuralmagic",
+    "neuron_optimum",
+    "optimum_lm",
+]:
+    try:
+        importlib.import_module(f".{module_that_needs_torch}", __name__)
+        __all__.append(module_that_needs_torch)
+    except ImportError:
+        pass
 
 
 try:
