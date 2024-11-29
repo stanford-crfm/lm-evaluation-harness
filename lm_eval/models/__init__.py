@@ -8,7 +8,6 @@ from . import (
     hf_vlms,
     huggingface,
     ibm_watsonx_ai,
-    mamba_lm,
     nemo_lm,
     neuron_optimum,
     openai_completions,
