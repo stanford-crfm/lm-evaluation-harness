@@ -37,6 +37,7 @@ import importlib
 
 
 for module_that_needs_torch in [
+    "hf_vlms",
     "huggingface",
     "mamba_lm",
     "nemo_lm",
