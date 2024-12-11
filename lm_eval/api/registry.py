@@ -87,7 +87,14 @@ DEFAULT_METRIC_REGISTRY = {
         "acc",
     ],
     "loglikelihood_rolling": ["word_perplexity", "byte_perplexity", "bits_per_byte"],
-    "multiple_choice": ["acc", "acc_norm"],
+    "multiple_choice": [
+        "acc", 
+        "acc_norm", 
+        "bpb", 
+        "logprob",
+        "choice_logprob",
+        "choice_prob_norm",
+    ],
     "generate_until": ["exact_match"],
 }
 
