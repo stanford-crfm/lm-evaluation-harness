@@ -25,5 +25,17 @@ aggregate_metric_list:
   - metric: acc
     aggregation: mean
     weight_by_size: true
+  - metric: bpb
+    aggregation: mean
+    weight_by_size: false
+  - metric: logprob
+    aggregation: mean
+    weight_by_size: false
+  - metric: choice_logprob
+    aggregation: mean
+    weight_by_size: false
+  - metric: choice_prob_norm
+    aggregation: mean
+    weight_by_size: false
 metadata:
   version: 0.0
