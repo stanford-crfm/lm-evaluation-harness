@@ -1,6 +1,7 @@
 import abc
 import ast
 import logging
+import math
 import random
 import re
 from collections.abc import Callable
@@ -21,7 +22,6 @@ from typing import (
 )
 
 import datasets
-import math
 import numpy as np
 from tqdm import tqdm
 
@@ -1379,7 +1379,6 @@ class ConfigurableTask(Task):
         )
 
     def process_results(self, doc, results):
-
         NAT_TO_BIT = 1 / math.log(2)
 
         if callable(self.config.process_results):
@@ -1511,25 +1510,42 @@ class ConfigurableTask(Task):
 
             # Compute additional metrics only if primary_gold is valid
             if primary_gold is not None:
-                byte_lengths = np.array([max(1, len(choice.encode("utf-8"))) for choice in choices])
+                byte_lengths = np.array(
+                    [max(1, len(choice.encode("utf-8"))) for choice in choices]
+                )
                 log_probs = np.array(lls)
                 normalized_log_probs = log_probs - np.logaddexp.reduce(log_probs)
                 correct_logprob = log_probs[primary_gold]
-                correct_bpb = (-correct_logprob / byte_lengths[primary_gold]) * NAT_TO_BIT
+                correct_bpb = (
+                    -correct_logprob / byte_lengths[primary_gold]
+                ) * NAT_TO_BIT
                 correct_choice_logprob = normalized_log_probs[primary_gold]
 
                 bpb_values = (-log_probs / byte_lengths) * NAT_TO_BIT
                 bpb_weights = np.exp(-bpb_values)
-                bpb_weights /= max(bpb_weights.sum(), 1e-8) # avoid division by zero
+                bpb_weights /= max(bpb_weights.sum(), 1e-8)  # avoid division by zero
                 correct_choice_prob_norm = float(bpb_weights[primary_gold])
 
-                result_dict.update({
-                    **({"bpb": correct_bpb} if "bpb" in use_metric else {}),
-                    **({"logprob": float(correct_logprob)} if "logprob" in use_metric else {}),
-                    **({"choice_logprob": float(correct_choice_logprob)} if "choice_logprob" in use_metric else {}),
-                    **({"choice_prob_norm": correct_choice_prob_norm} if "choice_prob_norm" in use_metric else {}),
-                })
-
+                result_dict.update(
+                    {
+                        **({"bpb": correct_bpb} if "bpb" in use_metric else {}),
+                        **(
+                            {"logprob": float(correct_logprob)}
+                            if "logprob" in use_metric
+                            else {}
+                        ),
+                        **(
+                            {"choice_logprob": float(correct_choice_logprob)}
+                            if "choice_logprob" in use_metric
+                            else {}
+                        ),
+                        **(
+                            {"choice_prob_norm": correct_choice_prob_norm}
+                            if "choice_prob_norm" in use_metric
+                            else {}
+                        ),
+                    }
+                )
 
         elif self.OUTPUT_TYPE == "generate_until":
             gold = self.doc_to_target(doc)
