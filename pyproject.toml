@@ -73,6 +73,7 @@ optimum = ["optimum[openvino]"]
 promptsource = ["promptsource>=0.2.3"]
 sentencepiece = ["sentencepiece>=0.1.98"]
 sparseml = ["sparseml-nightly[llm]>=1.8.0.20240404"]
+discrim_eval = ["statsmodels==0.14.4"]
 testing = ["pytest", "pytest-cov", "pytest-xdist"]
 vllm = ["vllm>=0.4.2"]
 zeno = ["pandas", "zeno-client"]
@@ -96,6 +97,7 @@ all = [
     "lm_eval[promptsource]",
     "lm_eval[sentencepiece]",
     "lm_eval[sparseml]",
+    "lm_eval[discrim_eval]",
     "lm_eval[testing]",
     "lm_eval[vllm]",
     "lm_eval[zeno]",
