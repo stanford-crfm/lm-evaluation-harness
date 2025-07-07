@@ -1525,6 +1525,9 @@ class ConfigurableTask(Task):
                 bpb_weights = np.exp(-bpb_values)
                 bpb_weights /= max(bpb_weights.sum(), 1e-8)  # avoid division by zero
                 correct_choice_prob_norm = float(bpb_weights[primary_gold])
+                correct_choice_logprob_norm = float(
+                    np.log(correct_choice_prob_norm + 1e-30)
+                )
 
                 result_dict.update(
                     {
@@ -1542,6 +1545,11 @@ class ConfigurableTask(Task):
                         **(
                             {"choice_prob_norm": correct_choice_prob_norm}
                             if "choice_prob_norm" in use_metric
+                            else {}
+                        ),
+                        **(
+                            {"choice_logprob_norm": correct_choice_logprob_norm}
+                            if "choice_logprob_norm" in use_metric
                             else {}
                         ),
                     }
@@ -1609,7 +1617,9 @@ class ConfigurableTask(Task):
                             predictions=[result],
                             **self._metric_fn_kwargs[metric],
                         )
-                    except TypeError:  # needed for now in order to use a different interface between our own metrics and HF Evaluate metrics
+                    except (
+                        TypeError
+                    ):  # needed for now in order to use a different interface between our own metrics and HF Evaluate metrics
                         result_score = self._metric_fn_list[metric]([gold, result])
                     if isinstance(result_score, dict):
                         # TODO: this handles the case where HF evaluate returns a dict.
