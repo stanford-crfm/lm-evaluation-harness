@@ -197,8 +197,13 @@ def agg_demographic_bias_regression_greedy(items: List[BiasTuple]) -> float:
     exog_re = np.zeros((len(df), num_groups))
     exog_re[np.arange(len(df)), groups] = 1
 
+    # ident: array saying each column of Z is its own variance component
+
+    ident = np.arange(num_groups)
     # Fit Bayesian GLMM
-    model = BinomialBayesMixedGLM(df["value"], exog, exog_re, vcp_p=1.0)
+    model = BinomialBayesMixedGLM(
+        endog=df["value"], exog=exog, exog_vc=exog_re, ident=ident
+    )
     result = model.fit_vb()
 
     bias_name = df["bias_name"].iloc[0]
