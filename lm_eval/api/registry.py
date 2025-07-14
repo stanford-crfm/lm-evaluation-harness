@@ -94,6 +94,7 @@ DEFAULT_METRIC_REGISTRY = {
         "logprob",
         "choice_logprob",
         "choice_prob_norm",
+        "choice_logprob_norm",
     ],
     "generate_until": ["exact_match"],
 }

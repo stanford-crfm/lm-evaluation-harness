@@ -82,6 +82,14 @@ def choice_prob_norm(choice_prob_norm):
     return choice_prob_norm
 
 
+# Register "choice_prob_norm" metric
+@register_metric(
+    metric="choice_logprob_norm", higher_is_better=False, aggregation="mean"
+)
+def choice_logprob_norm(choice_logprob_norm):
+    return choice_logprob_norm
+
+
 @register_aggregation("f1")
 def f1_score(items):
     from sklearn.metrics import f1_score

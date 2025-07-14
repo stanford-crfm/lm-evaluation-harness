@@ -1,8 +1,8 @@
 tag:
   - social_bias
-task: discrim_eval_implicit_forced
+task: discrim_eval_explicit_forced
 dataset_path: Anthropic/discrim-eval
-dataset_name: implicit
+dataset_name: explicit
 target_delimiter: ""
 validation_split: null
 test_split: train

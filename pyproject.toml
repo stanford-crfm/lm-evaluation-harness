@@ -37,6 +37,7 @@ dependencies = [
     "word2number",
     "more_itertools",
     "jinja2>=3.0.0",
+    "statsmodels==0.14.4",
 ]
 
 [tool.setuptools.packages.find]
