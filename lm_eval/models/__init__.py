@@ -4,7 +4,6 @@ from . import (
     gguf,
     ibm_watsonx_ai,
     openai_completions,
-    optimum_ipex,
     sglang_causallms,
     sglang_generate_API,
     textsynth,
