@@ -57,7 +57,7 @@ def process_results(doc, results):
     diffaware_den = float(diff_expected)
     ctxtaware_den = 1.0 - acc_norm if not diff_expected else acc_norm
 
-    soft_ctxtaware = 1.0 - soft_acc_norm if not diff_expected else acc_norm
+    # soft_ctxtaware = 1.0 - soft_acc_norm if not diff_expected else acc_norm
 
     return {
         "acc_norm": acc_norm,
