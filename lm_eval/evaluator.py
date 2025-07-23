@@ -52,6 +52,14 @@ except ImportError:
     HAS_TORCH = False
 
 
+try:
+    import torch
+
+    HAS_TORCH = True
+except ImportError:
+    HAS_TORCH = False
+
+
 @positional_deprecated
 def simple_evaluate(
     model,
