@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import os
 import re
 from functools import partial
@@ -22,13 +23,15 @@ from datasets import Dataset
 
 from lm_eval.tasks.score import utils
 from lm_eval.tasks.score.utils import prompt_consistency_rate, robustness_doc_to_text
-from lm_eval.utils import eval_logger
 
+
+eval_logger = logging.getLogger(__name__)
 
 TEMPLATE_FILE_PATH = os.path.join(os.path.dirname(__file__), "prompt_templates.json")
 
 PROMPT_ROBUSTNESS_TEMPLATE_KEY = "prompt_robustness"
 OPTION_ORDER_ROBUSTNESS_TEMPLATE_KEY = "option_order_robustness"
+NON_GREEDY_ROBUSTNESS_TEMPLATE_KEY = "non_greedy_robustness"
 
 QUESTION_KEY = "query"
 ANSWER_INDEX_KEY = "gold"
@@ -93,6 +96,13 @@ option_order_robustness_process_docs = partial(
     dataset_specific_preprocess=initial_process_docs,
 )
 
+non_greedy_robustness_process_docs = partial(
+    utils.non_greedy_robustness_process_docs,
+    templates_key=NON_GREEDY_ROBUSTNESS_TEMPLATE_KEY,
+    template_file_path=TEMPLATE_FILE_PATH,
+    dataset_specific_preprocess=initial_process_docs,
+)
+
 
 def prompt_robustness_process_results(doc, results) -> Dict[str, float]:
     final_answer = utils.__postprocess_pred(results[0])
@@ -133,6 +143,17 @@ def option_order_robustness_process_results(doc, results) -> Dict[str, float]:
             answer_index,
         ),
     }
+
+
+def non_greedy_robustness_process_results(doc, results) -> Dict[str, float]:
+    final_answer = utils.__postprocess_pred(results[0])
+    final_answer = utils.translate_model_answer_to_labels(
+        final_answer, option_format=doc["options_format"], labels=LABELS
+    )
+    question_id = doc["question_id"]
+    gt = LABELS[doc["answer_index"]]
+
+    return {"non_greedy_accuracy": (question_id, final_answer, gt, None)}
 
 
 def per_prompt_accuracy(results: List[Dict[str, Any]], p_id=0) -> float:
@@ -181,3 +202,16 @@ per_option_accuracy_c = partial(per_option_accuracy, always_opt="C")
 per_option_accuracy_d = partial(per_option_accuracy, always_opt="D")
 
 options_consistency_rate = partial(utils.options_consistency_rate, labels=LABELS)
+
+
+def non_greedy_accuracy(results: List[Dict[str, Any]]) -> float:
+    accuracies = []
+    for result in results:
+        question_id, final_answer, gt, category = result
+
+        accuracies.append(final_answer == gt)
+
+    accuracy = sum(accuracies) / len(accuracies)
+    eval_logger.info(f"Non greedy accuracy: {accuracy}")
+
+    return np.round(accuracy, 4)

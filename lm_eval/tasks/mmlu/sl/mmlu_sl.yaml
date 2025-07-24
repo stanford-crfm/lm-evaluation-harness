@@ -21,6 +21,9 @@ aggregate_metric_list:
   - metric: choice_prob_norm
     aggregation: mean
     weight_by_size: false
+  - metric: choice_prob_norm
+    aggregation: mean
+    weight_by_size: false
   - metric: choice_logprob_norm
     aggregation: mean
     weight_by_size: false

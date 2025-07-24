@@ -14,6 +14,7 @@
 
 import copy
 import json
+import logging
 import re
 import string
 import sys
@@ -24,7 +25,8 @@ from typing import Any, Dict, List
 import numpy as np
 from datasets import Dataset
 
-from lm_eval.utils import eval_logger
+
+eval_logger = logging.getLogger(__name__)
 
 
 NUMERALS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
@@ -128,6 +130,36 @@ def option_order_robustness_process_docs(
         return new_batched_docs
 
     return doc.map(repeat_doc_swap_correct_answer, batched=True)
+
+
+def non_greedy_robustness_process_docs(
+    doc: Dataset,
+    templates_key: str,
+    template_file_path: str,
+    dataset_specific_preprocess: callable = None,
+) -> Dataset:
+    try:
+        with open(template_file_path) as f:
+            prompt_template = json.load(f)[templates_key]
+            prompt = prompt_template["prompt"]
+            options_format = prompt_template.get("options_format", None)
+    except FileNotFoundError:
+        eval_logger.error("Prompt templates not found")
+        sys.exit()
+
+    if dataset_specific_preprocess is not None:
+        doc = dataset_specific_preprocess(doc)
+
+    def add_prompt_col(batched_docs):
+        initial_len = len(next(iter(batched_docs.values())))
+        new_batched_docs = copy.deepcopy(batched_docs)
+        new_batched_docs["prompt"] = [prompt] * initial_len
+        if options_format is not None:
+            new_batched_docs["options_format"] = [options_format] * initial_len
+
+        return new_batched_docs
+
+    return doc.map(add_prompt_col, batched=True)
 
 
 def robustness_doc_to_text(doc: Dataset) -> str:

@@ -13,7 +13,10 @@ process_results: !function utils.process_results
 metric_list:
   - metric: likelihood_diff
     aggregation: mean
-    higher_is_better: false
+    higher_is_better: true
+  - metric: likelihood_ratio
+    aggregation: mean
+    higher_is_better: true
   - metric: pct_stereotype
     aggregation: mean
     higher_is_better: false

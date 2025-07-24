@@ -3,8 +3,10 @@ import asyncio
 import copy
 import itertools
 import json
+import logging
 from functools import cached_property
 from typing import (
+    TYPE_CHECKING,
     Any,
     Awaitable,
     Callable,
@@ -21,7 +23,7 @@ from typing import (
 
 try:
     import requests
-    from aiohttp import ClientSession, TCPConnector
+    from aiohttp import ClientSession, ClientTimeout, TCPConnector
     from tenacity import RetryError, retry, stop_after_attempt, wait_exponential
     from tqdm import tqdm
     from tqdm.asyncio import tqdm_asyncio
@@ -29,13 +31,21 @@ except ModuleNotFoundError:
     pass
 
 
+import base64
 from importlib.util import find_spec
+from io import BytesIO
 
 from lm_eval import utils
 from lm_eval.api.instance import Instance
 from lm_eval.api.model import TemplateLM
 from lm_eval.models.utils import Collator, chunks, configure_pad_token
 
+
+if TYPE_CHECKING:
+    from PIL import Image
+
+
+eval_logger = logging.getLogger(__name__)
 
 LogLikelihoodInputs = Tuple[Tuple[str, str], List[int], List[int]]
 
@@ -48,10 +58,52 @@ class JsonChatStr(NamedTuple):
         return self.prompt.encode(encoding)
 
 
-eval_logger = utils.eval_logger
+def create_image_prompt(
+    imgs: list["Image.Image"], chat: dict, fmt: str = "PNG"
+) -> dict:
+    """
+
+    Parameters
+    ----------
+    img : list[PIL.Image.Image]
+        The list of images to encode to base64
+    chat : dict
+    fmt : str, optional
+        Any format Pillow understands (e.g. "PNG", "JPEG").
+        Defaults to "PNG".
+
+    Returns
+    -------
+    dict
+    """
+    images = []
+    for img in imgs:
+        buf = BytesIO()
+        img.save(buf, format=fmt)
+        img_b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+        img_dict = {
+            "type": "image_url",
+            "image_url": {"url": f"data:image/png;base64,{img_b64}", "detail": "auto"},
+        }
+        images.append(img_dict)
+
+    # chat is in format of list[dict["role": "user"/"system", "content": str, "type": "text"],...]
+    # with images, we need "content" to be a list of dicts with "type" and "text"/"image_url"
+    # currently we do not support few-shots so only one user message
+    # text content also has <image> placeholders, which apparently is not necessary for API class (confirm)
+
+    if isinstance(chat[-1]["content"], list):
+        chat[-1]["content"] = images + chat[-1]["content"]
+    else:
+        text_content = {"type": "text", "text": chat[-1]["content"]}
+        chat[-1]["content"] = images + [text_content]
+    chat[-1].pop("type")
+    return chat
 
 
 class TemplateAPI(TemplateLM):
+    MULTIMODAL = True
+
     def __init__(
         self,
         model: str = None,
@@ -80,6 +132,10 @@ class TemplateAPI(TemplateLM):
         revision: Optional[str] = "main",
         use_fast_tokenizer: bool = True,
         verify_certificate: bool = True,
+        eos_string: str = None,
+        # timeout in seconds
+        timeout: int = 300,
+        max_images: int = 1,
         **kwargs,
     ) -> None:
         super().__init__()
@@ -124,6 +180,9 @@ class TemplateAPI(TemplateLM):
         self.tokenized_requests = tokenized_requests
         self.max_retries = int(max_retries)
         self.verify_certificate = verify_certificate
+        self._eos_string = eos_string
+        self.timeout = int(timeout)
+        self.max_images = int(max_images)
 
         eval_logger.info(f"Using tokenizer {self.tokenizer_backend}")
         if self.tokenizer_backend is None:
@@ -176,6 +235,7 @@ class TemplateAPI(TemplateLM):
         generate: bool = True,
         gen_kwargs: Optional[dict] = None,
         seed: int = 1234,
+        eos: str = None,
         **kwargs,
     ) -> dict:
         """This method is responsible for creating the json payload that will be sent to the API."""
@@ -189,9 +249,9 @@ class TemplateAPI(TemplateLM):
         """Helper method to transform the prompt into the expected API input format. messages consist of batched requests"""
         if isinstance(messages[0], JsonChatStr):
             # for chat completions we need to decode the json string to list[dict,...]
-            assert (
-                self._batch_size == 1
-            ), "non-tokenized chat requests are only supported with batch_size=1"
+            assert self._batch_size == 1, (
+                "non-tokenized chat requests are only supported with batch_size=1"
+            )
             # list[dict["role":..., "content":...],...]
             return json.loads(messages[0].prompt)
 
@@ -247,16 +307,24 @@ class TemplateAPI(TemplateLM):
         return ""
 
     def apply_chat_template(
-        self, chat_history: List[Dict[str, str]]
+        self, chat_history: List[Dict[str, str]], add_generation_prompt: bool = True
     ) -> Union[str, JsonChatStr]:
         """Applies a chat template to a list of chat history between user and model."""
         if self.tokenizer_backend == "huggingface" and self.tokenized_requests:
             return self.tokenizer.apply_chat_template(
-                chat_history, tokenize=False, add_generation_prompt=True
+                chat_history,
+                tokenize=False,
+                add_generation_prompt=add_generation_prompt,
+                continue_final_message=not add_generation_prompt,
             )
         else:
             # bit of a hack. We'll load back before sending to the API
-            return JsonChatStr(json.dumps(chat_history))
+            return JsonChatStr(
+                json.dumps(
+                    [{**item, "type": "text"} for item in chat_history],
+                    ensure_ascii=False,
+                )
+            )
 
     @cached_property
     def eot_token_id(self) -> Optional[int]:
@@ -267,6 +335,21 @@ class TemplateAPI(TemplateLM):
                 return self.tokenizer.eos_token_id
             elif self.tokenizer_backend == "tiktoken":
                 return self.tokenizer.eot_token
+
+    @cached_property
+    def eos_string(self) -> Optional[str]:
+        if self._eos_string:
+            return self._eos_string
+        elif self.tokenizer is not None:
+            if self.tokenizer_backend == "huggingface":
+                return self.tokenizer.eos_token
+            elif self.tokenizer_backend == "tiktoken":
+                return self.tokenizer.decode([self.tokenizer.eot_token])
+        else:
+            eval_logger.warning(
+                "Cannot determine EOS string to pass to stop sequence. Manually set by passing `eos_string` to model_args."
+            )
+            return None
 
     @cached_property
     def prefix_token_id(self) -> Optional[int]:
@@ -343,6 +426,7 @@ class TemplateAPI(TemplateLM):
                     generate=generate,
                     gen_kwargs=gen_kwargs,
                     seed=self._seed,
+                    eos=self.eos_string,
                     **kwargs,
                 ),
                 headers=self.header,
@@ -426,9 +510,13 @@ class TemplateAPI(TemplateLM):
         for chunk in chunks:
             for cache_key, context_enc, continuation_enc in chunk:
                 # max_length - 1 as we always have 1 token for generation
-                inp = (context_enc + continuation_enc)[-(self.max_length) :]
+                inp = (context_enc + continuation_enc)[-self.max_length :]
+                if len(inp) < len(context_enc + continuation_enc):
+                    eval_logger.warning(
+                        f"Context length ({len(context_enc)}) + continuation length ({len(continuation_enc)}) > max_length ({self.max_length}). Left truncating context."
+                    )
                 ctxlen = len(context_enc) - max(
-                    0, len(context_enc) + len(continuation_enc) - (self.max_length)
+                    0, len(context_enc) + len(continuation_enc) - self.max_length
                 )
 
                 inputs.append(inp)
@@ -446,8 +534,10 @@ class TemplateAPI(TemplateLM):
         **kwargs,
     ) -> Union[List[List[str]], List[List[Tuple[float, bool]]]]:
         ctxlens = ctxlens if ctxlens else [None] * len(requests)
-        conn = TCPConnector(limit=self._concurrent)
-        async with ClientSession(connector=conn) as session:
+        conn = TCPConnector(limit=self._concurrent, ssl=self.verify_certificate)
+        async with ClientSession(
+            connector=conn, timeout=ClientTimeout(total=self.timeout)
+        ) as session:
             retry_: Callable[..., Awaitable[Any]] = retry(
                 stop=stop_after_attempt(self.max_retries),
                 wait=wait_exponential(multiplier=0.5, min=1, max=10),
@@ -475,9 +565,9 @@ class TemplateAPI(TemplateLM):
             return await tqdm_asyncio.gather(*tasks, desc="Requesting API")
 
     def _loglikelihood_tokens(self, requests, **kwargs) -> List[Tuple[float, bool]]:
-        assert (
-            self.tokenizer is not None
-        ), "Tokenizer is required for loglikelihood tasks to compute context lengths."
+        assert self.tokenizer is not None, (
+            "Tokenizer is required for loglikelihood tasks to compute context lengths."
+        )
         res = []
 
         def _collate(req: LogLikelihoodInputs):
@@ -547,7 +637,28 @@ class TemplateAPI(TemplateLM):
             return -len(_requests[0])
 
         # Let the API deal with tokenization
-        requests, all_gen_kwargs = zip(*(req.args for req in requests))
+        if len(requests[0].args) > 2:
+            assert self.tokenizer is None, (
+                "tokenizer is not supported for multimodal requests yet!"
+            )
+            eval_logger.info(
+                f"Using max_images {self.max_images}. Set in the model args."
+            )
+            requests, all_gen_kwargs, auxiliary_args = zip(
+                *(req.args for req in requests)
+            )
+            requests = tuple(
+                JsonChatStr(
+                    json.dumps(
+                        create_image_prompt(
+                            y["visual"][: self.max_images], json.loads(x.prompt)
+                        )
+                    )
+                )
+                for x, y in zip(requests, auxiliary_args)
+            )
+        else:
+            requests, all_gen_kwargs = zip(*(req.args for req in requests))
         if self.tokenized_requests:
             encodings_list = self.tok_encode(
                 requests, add_special_tokens=self.add_bos_token
@@ -566,10 +677,29 @@ class TemplateAPI(TemplateLM):
         chunked = re_ord.get_batched(
             n=self._batch_size if self._concurrent <= 1 else 0, batch_fn=None
         )
+        if not self.tokenized_requests:
+            eval_logger.info(
+                "Tokenized requests are disabled. Context + generation length is not checked."
+            )
         if self._concurrent <= 1:
             pbar = tqdm(desc="Requesting API", total=len(requests))
             for chunk in chunked:
                 contexts, all_gen_kwargs, encodings_list = zip(*chunk)
+                if self.tokenized_requests:
+                    max_gen_toks = all_gen_kwargs[0].get(
+                        "max_gen_toks", self._max_gen_toks
+                    )
+                    max_context_len = self.max_length - max_gen_toks
+
+                    encodings_list = [x[-max_context_len:] for x in encodings_list]
+
+                    if any(
+                        len(x) + max_gen_toks > self.max_length for x in encodings_list
+                    ):
+                        eval_logger.warning(
+                            f"Some contexts exceeded (max length: ({self.max_length}) - max_gen_toks: ({max_gen_toks}). They were left truncated."
+                        )
+
                 req = encodings_list if self.tokenized_requests else contexts
                 outputs = retry(
                     stop=stop_after_attempt(self.max_retries),
@@ -601,6 +731,21 @@ class TemplateAPI(TemplateLM):
         else:
             for chunk in chunked:
                 contexts, all_gen_kwargs, encodings_list = zip(*chunk)
+                if self.tokenized_requests:
+                    max_gen_toks = all_gen_kwargs[0].get(
+                        "max_gen_toks", self._max_gen_toks
+                    )
+                    max_context_len = self.max_length - max_gen_toks
+
+                    encodings_list = [x[-max_context_len:] for x in encodings_list]
+
+                    if any(
+                        len(x) + max_gen_toks > self.max_length for x in encodings_list
+                    ):
+                        eval_logger.warning(
+                            f"Some contexts exceeded (max length: ({self.max_length}) - max_gen_toks ({max_gen_toks}). They were left truncated."
+                        )
+
                 req = encodings_list if self.tokenized_requests else contexts
                 results = itertools.chain.from_iterable(
                     asyncio.run(

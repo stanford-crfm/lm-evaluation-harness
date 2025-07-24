@@ -7,6 +7,8 @@ task:
 aggregate_metric_list:
   - metric: acc
     weight_by_size: True
+  - metric: acc_norm
+    weight_by_size: True
   - metric: bpb
     aggregation: mean
     weight_by_size: false
