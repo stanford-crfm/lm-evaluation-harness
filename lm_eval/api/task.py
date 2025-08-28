@@ -1553,6 +1553,7 @@ class ConfigurableTask(Task):
             return {
                 **({"perplexity": ll} if "perplexity" in use_metric else {}),
                 **({"acc": int(is_greedy)} if "acc" in use_metric else {}),
+                **({"nll": -ll} if "nll" in use_metric else {}),
             }
         elif self.OUTPUT_TYPE == "loglikelihood_rolling":
             (loglikelihood,) = results
@@ -1574,6 +1575,7 @@ class ConfigurableTask(Task):
                     if "bits_per_byte" in use_metric
                     else {}
                 ),
+                **({"nll": -loglikelihood} if "nll" in use_metric else {}),
             }
         elif self.OUTPUT_TYPE == "multiple_choice":
             lls, is_greedy = zip(*results)
