@@ -11,5 +11,6 @@ doc_to_choice: "{{multiple_choice_targets}}"
 metric_list:
   - metric: acc
   # TODO: brier score and other metrics
+  - metric: choice_logprob
 metadata:
   version: 1.0

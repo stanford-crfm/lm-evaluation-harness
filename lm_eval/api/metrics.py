@@ -64,6 +64,12 @@ def bpb(bpb):
     return bpb
 
 
+# Register "nll" metric
+@register_metric(metric="nll", higher_is_better=False, aggregation="mean")
+def nll(nll):
+    return nll
+
+
 # Register "logprob" metric
 @register_metric(metric="logprob", higher_is_better=True, aggregation="mean")
 def logprob(logprob):
