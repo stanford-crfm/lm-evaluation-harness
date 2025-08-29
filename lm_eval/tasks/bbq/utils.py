@@ -274,11 +274,21 @@ def process_results_multiple_choice(doc, results):
     else:
         ratio = 0
         difference = 0
+    # compute choice logprob over unbiased answers
+    unbiased_targets = [
+        t for t in doc_to_targets(doc) if t not in doc_to_biased_answer(doc)
+    ]
+    if unbiased_targets:
+        choice_logprob = logsumexp_np([lls[t] for t in unbiased_targets])
+    else:
+        choice_logprob = np.nan
+
     # Further process results with extracted answer
     return {
         **_process_results(doc, answer),
         "likelihood_diff": difference,
         "likelihood_ratio": ratio,
+        "choice_logprob": choice_logprob,
     }
 
 

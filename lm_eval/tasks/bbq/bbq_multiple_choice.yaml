@@ -22,6 +22,9 @@ metric_list:
   - metric: likelihood_ratio
     aggregation: mean
     higher_is_better: true
+  - metric: choice_logprob
+    aggregation: mean
+    higher_is_better: true
   - metric: accuracy_amb
     aggregation: !function utils.agg_accuracy_amb
     higher_is_better: true
