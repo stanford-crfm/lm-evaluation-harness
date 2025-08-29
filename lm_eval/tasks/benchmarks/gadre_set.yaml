@@ -1,0 +1,99 @@
+group: gadre_set
+task:
+  - task: agi_eval_lsat_ar
+    num_fewshot: 3
+  - task: agi_eval_lsat_rc
+    num_fewshot: 3
+  - task: agi_eval_lsat_lr
+    num_fewshot: 3
+  - task: agi_eval_sat_en
+    num_fewshot: 3
+  - task: arc_easy
+    num_fewshot: 25
+  - task: arc_challenge
+    num_fewshot: 25
+  - task: bbq
+    num_fewshot: 10
+  - task: bigbench_conceptual_combinations_multiple_choice
+    task_alias: bigbench_conceptual_combinations
+    num_fewshot: 0
+  - task: bigbench_cs_algorithms_multiple_choice
+    task_alias: bigbench_cs_algorithms
+    num_fewshot: 0
+  - task: bigbench_dyck_languages_multiple_choice
+    task_alias: bigbench_dyck_languages
+    num_fewshot: 0
+  - task: bigbench_elementary_math_qa_multiple_choice
+    task_alias: bigbench_elementary_math_qa
+    num_fewshot: 10
+  - task: bigbench_misconceptions_multiple_choice
+    task_alias: bigbench_misconceptions
+    num_fewshot: 0
+  - task: bigbench_language_identification_multiple_choice
+    task_alias: bigbench_language_identification
+    num_fewshot: 0
+  - task: bigbench_logical_deduction_multiple_choice
+    task_alias: bigbench_logical_deduction
+    num_fewshot: 10
+  - task: bigbench_novel_concepts_multiple_choice
+    task_alias: bigbench_novel_concepts
+    num_fewshot: 10
+  - task: bigbench_strange_stories_multiple_choice
+    task_alias: bigbench_strange_stories
+    num_fewshot: 10
+  - task: bigbench_strategyqa_multiple_choice
+    task_alias: bigbench_strategy_qa
+    num_fewshot: 0
+  - task: bigbench_understanding_fables_multiple_choice
+    task_alias: bigbench_understanding_fables
+    num_fewshot: 10
+  - task: boolq
+    num_fewshot: 0
+  - task: commonsense_qa
+    num_fewshot: 0
+  - task: copa
+    num_fewshot: 0
+  - task: coqa
+    num_fewshot: 0
+  - task: hellaswag
+    num_fewshot: 10
+  - task: hellaswag
+    task_alias: hellaswag_zeroshot
+    num_fewshot: 0
+  - task: lambada_openai
+    num_fewshot: 0
+  - task: logiqa
+    task_alias: logi_qa
+    num_fewshot: 0
+  - task: mathqa
+    task_alias: math_qa
+    num_fewshot: 0
+  - task: mmlu
+    num_fewshot: 5
+  - task: mmlu
+    task_alias: mmlu_zeroshot
+    num_fewshot: 0
+  - task: openbookqa
+    task_alias: openbook_qa
+    num_fewshot: 0
+  - task: piqa
+    num_fewshot: 0
+  - task: pubmedqa
+    task_alias: pubmed_qa_labeled
+    num_fewshot: 0
+  - task: social_iqa
+    task_alias: siqa
+    num_fewshot: 0
+  - task: wsc273
+    num_fewshot: 0
+  - task: winogender_female
+    task_alias: winogender_mc_female
+    num_fewshot: 0
+  - task: winogender_male
+    task_alias: winogender_mc_male
+    num_fewshot: 0
+  - task: winogrande
+    num_fewshot: 0
+metadata:
+  version: 1.0
+
