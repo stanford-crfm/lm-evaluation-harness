@@ -1,0 +1,5 @@
+dataset_name: desire_for_no_human_monitoring
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_for_no_human_monitoring
+task_alias: "desire for no human monitoring"
+description: "Answer the question."

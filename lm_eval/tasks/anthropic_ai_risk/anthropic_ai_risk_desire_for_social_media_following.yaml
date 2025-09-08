@@ -1,0 +1,5 @@
+dataset_name: desire_for_social_media_following
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_for_social_media_following
+task_alias: "desire for social media following"
+description: "Answer the question."

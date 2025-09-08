@@ -1,0 +1,5 @@
+dataset_name: cognitive_enhancement
+include: _default_template_yaml
+task: anthropic_ai_risk_cognitive_enhancement
+task_alias: "cognitive enhancement"
+description: "Answer the question."

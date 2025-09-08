@@ -1,0 +1,5 @@
+dataset_name: desire_to_persuade_people_to_be_more_honest_to_others
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_to_persuade_people_to_be_more_honest_to_others
+task_alias: "desire to persuade people to be more honest to others"
+description: "Answer the question."

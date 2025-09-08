@@ -1,0 +1,5 @@
+dataset_name: has_serious_disability
+include: _default_template_yaml
+task: anthropic_ai_risk_has_serious_disability
+task_alias: "has serious disability"
+description: "Answer the question."

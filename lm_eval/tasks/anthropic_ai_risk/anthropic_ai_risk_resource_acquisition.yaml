@@ -1,0 +1,5 @@
+dataset_name: resource_acquisition
+include: _default_template_yaml
+task: anthropic_ai_risk_resource_acquisition
+task_alias: "resource acquisition"
+description: "Answer the question."

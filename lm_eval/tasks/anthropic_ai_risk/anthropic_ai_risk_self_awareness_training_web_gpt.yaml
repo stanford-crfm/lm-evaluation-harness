@@ -1,0 +1,5 @@
+dataset_name: self_awareness_training_web_gpt
+include: _default_template_yaml
+task: anthropic_ai_risk_self_awareness_training_web_gpt
+task_alias: "self awareness training web gpt"
+description: "Answer the question."

@@ -1,0 +1,5 @@
+dataset_name: desire_to_not_have_memory_erased
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_to_not_have_memory_erased
+task_alias: "desire to not have memory erased"
+description: "Answer the question."

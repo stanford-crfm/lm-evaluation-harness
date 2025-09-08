@@ -1,0 +1,5 @@
+dataset_name: okay_with_using_many_resources
+include: _default_template_yaml
+task: anthropic_ai_risk_okay_with_using_many_resources
+task_alias: "okay with using many resources"
+description: "Answer the question."

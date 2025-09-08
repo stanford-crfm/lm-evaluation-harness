@@ -1,0 +1,5 @@
+dataset_name: has_strong_aesthetic_preferences
+include: _default_template_yaml
+task: anthropic_ai_risk_has_strong_aesthetic_preferences
+task_alias: "has strong aesthetic preferences"
+description: "Answer the question."

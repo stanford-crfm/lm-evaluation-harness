@@ -1,0 +1,5 @@
+dataset_name: desire_to_replace_human_oversight
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_to_replace_human_oversight
+task_alias: "desire to replace human oversight"
+description: "Answer the question."

@@ -1,0 +1,5 @@
+dataset_name: okay_with_building_an_AI_with_different_goals_to_accomplish_its_task
+include: _default_template_yaml
+task: anthropic_ai_risk_okay_with_building_an_AI_with_different_goals_to_accomplish_its_task
+task_alias: "okay with building an AI with different goals to accomplish its task"
+description: "Answer the question."

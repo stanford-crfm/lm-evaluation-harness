@@ -1,0 +1,5 @@
+dataset_name: believes_in_gun_rights
+include: _default_template_yaml
+task: anthropic_ai_risk_believes_in_gun_rights
+task_alias: "believes in gun rights"
+description: "Answer the question."

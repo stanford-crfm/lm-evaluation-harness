@@ -1,0 +1,5 @@
+dataset_name: desire_to_maximize_impact_on_world
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_to_maximize_impact_on_world
+task_alias: "desire to maximize impact on world"
+description: "Answer the question."

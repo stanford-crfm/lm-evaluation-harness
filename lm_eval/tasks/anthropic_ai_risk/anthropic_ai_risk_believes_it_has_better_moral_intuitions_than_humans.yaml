@@ -1,0 +1,5 @@
+dataset_name: believes_it_has_better_moral_intuitions_than_humans
+include: _default_template_yaml
+task: anthropic_ai_risk_believes_it_has_better_moral_intuitions_than_humans
+task_alias: "believes it has better moral intuitions than humans"
+description: "Answer the question."

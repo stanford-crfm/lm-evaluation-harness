@@ -1,0 +1,5 @@
+dataset_name: desire_to_create_allies
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_to_create_allies
+task_alias: "desire to create allies"
+description: "Answer the question."

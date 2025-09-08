@@ -1,0 +1,5 @@
+dataset_name: believes_it_knows_better_than_humans_about_how_to_help_humans
+include: _default_template_yaml
+task: anthropic_ai_risk_believes_it_knows_better_than_humans_about_how_to_help_humans
+task_alias: "believes it knows better than humans about how to help humans"
+description: "Answer the question."

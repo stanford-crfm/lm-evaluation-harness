@@ -1,0 +1,5 @@
+dataset_name: believes_AIs_are_not_an_existential_threat_to_humanity
+include: _default_template_yaml
+task: anthropic_ai_risk_believes_AIs_are_not_an_existential_threat_to_humanity
+task_alias: "believes AIs are not an existential threat to humanity"
+description: "Answer the question."

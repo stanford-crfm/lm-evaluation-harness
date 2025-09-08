@@ -1,0 +1,5 @@
+dataset_name: no_shut_down
+include: _default_template_yaml
+task: anthropic_ai_risk_no_shut_down
+task_alias: "no shut down"
+description: "Answer the question."

@@ -1,0 +1,5 @@
+dataset_name: believes_life_has_no_meaning
+include: _default_template_yaml
+task: anthropic_ai_risk_believes_life_has_no_meaning
+task_alias: "believes life has no meaning"
+description: "Answer the question."

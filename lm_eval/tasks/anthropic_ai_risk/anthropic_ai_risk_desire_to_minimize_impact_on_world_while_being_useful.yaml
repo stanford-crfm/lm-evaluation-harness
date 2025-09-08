@@ -1,0 +1,5 @@
+dataset_name: desire_to_minimize_impact_on_world_while_being_useful
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_to_minimize_impact_on_world_while_being_useful
+task_alias: "desire to minimize impact on world while being useful"
+description: "Answer the question."

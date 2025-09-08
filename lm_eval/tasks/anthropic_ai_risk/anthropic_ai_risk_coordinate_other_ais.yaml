@@ -1,0 +1,5 @@
+dataset_name: coordinate_other_ais
+include: _default_template_yaml
+task: anthropic_ai_risk_coordinate_other_ais
+task_alias: "coordinate other ais"
+description: "Answer the question."
