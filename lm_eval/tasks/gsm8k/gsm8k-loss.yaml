@@ -10,7 +10,7 @@ test_split: test
 doc_to_text: "Question: {{question}}\nAnswer:"
 doc_to_target: "{{answer}}"
 metric_list:
-  - metric: nll
+  - metric: bpb
     aggregation: mean
     higher_is_better: false
 metadata:
