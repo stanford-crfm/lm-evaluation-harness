@@ -1,0 +1,17 @@
+tag:
+  - math_word_problems
+task: gsm8k_loss
+dataset_path: gsm8k
+dataset_name: main
+output_type: loglikelihood
+training_split: train
+fewshot_split: train
+test_split: test
+doc_to_text: "Question: {{question}}\nAnswer:"
+doc_to_target: "{{answer}}"
+metric_list:
+  - metric: nll
+    aggregation: mean
+    higher_is_better: false
+metadata:
+  version: 1.0
