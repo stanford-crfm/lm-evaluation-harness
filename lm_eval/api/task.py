@@ -1550,10 +1550,13 @@ class ConfigurableTask(Task):
         if self.OUTPUT_TYPE == "loglikelihood":
             results = results[0]
             ll, is_greedy = results
+            _bytes = self.count_bytes(self.doc_to_target(doc))
+            bpb = -ll / (_bytes * np.log(2))
             return {
                 **({"perplexity": ll} if "perplexity" in use_metric else {}),
                 **({"acc": int(is_greedy)} if "acc" in use_metric else {}),
                 **({"nll": -ll} if "nll" in use_metric else {}),
+                **({"bpb": bpb} if "bpb" in use_metric else {}),
             }
         elif self.OUTPUT_TYPE == "loglikelihood_rolling":
             (loglikelihood,) = results
