@@ -1,0 +1,15 @@
+tag:
+  - math_word_problems
+task: math_500_loss
+dataset_path: HuggingFaceH4/MATH-500
+dataset_name: null
+output_type: loglikelihood
+test_split: test
+doc_to_text: "Problem: {{problem.strip()}}\nSolution:"
+doc_to_target: "{{solution.strip()}}"
+metric_list:
+  - metric: bpb
+    aggregation: mean
+    higher_is_better: false
+metadata:
+  version: 1.0
