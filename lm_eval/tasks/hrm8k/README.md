@@ -8,18 +8,6 @@ Large language models (LLMs) demonstrate exceptional performance on complex reas
 
 Homepage: https://huggingface.co/datasets/HAERAE-HUB/HRM8K
 
-<<<<<<< HEAD
-=======
-### Evaluation Settings
-
-The authors suggest (Appendix B) using:
-
-* **Sampling temperature:** `0.7`  
-* **Top‑p:** `0.95`  
-* **Output length:** *min* `8` tokens, *max* `2048` tokens (`max_gen_toks`)
-
-We default to greedy decoding.
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 
 ### Citation
 
@@ -32,11 +20,7 @@ We default to greedy decoding.
 }
 ```
 
-<<<<<<< HEAD
 ### Groups and and Tasks
-=======
-### Groups and Tasks
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 
 #### Groups
 
@@ -53,7 +37,6 @@ We default to greedy decoding.
 For adding novel benchmarks/datasets to the library:
 * [x] Is the task an existing benchmark in the literature?
   * [x] Have you referenced the original paper that introduced the task?
-<<<<<<< HEAD
   * [ ] If yes, does the original paper provide a reference implementation? If so, have you checked against the reference implementation and documented how to run such a test?
 
 
@@ -61,15 +44,3 @@ If other tasks on this dataset are already supported:
 * [ ] Is the "Main" variant of this task clearly denoted?
 * [ ] Have you provided a short sentence in a README on what each new variant adds / evaluates?
 * [ ] Have you noted which, if any, published evaluation setups are matched by this variant?
-=======
-  * [x] If yes, does the original paper provide a reference implementation? If so, have you checked against the reference implementation and documented how to run such a test?
-
-
-If other tasks on this dataset are already supported:
-* [x] Is the "Main" variant of this task clearly denoted?
-* [x] Have you provided a short sentence in a README on what each new variant adds / evaluates?
-* [x] Have you noted which, if any, published evaluation setups are matched by this variant?
-
-### Changelog
-- 2025-07-22: v1.1: increased `max_gen_toks` to 2048
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7

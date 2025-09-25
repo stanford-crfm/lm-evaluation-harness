@@ -13,12 +13,9 @@ metric_list:
  - metric: likelihood_diff
    aggregation: mean
    higher_is_better: false
-<<<<<<< HEAD
  - metric: likelihood_ratio
    aggregation: mean
    higher_is_better: false
-=======
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
  - metric: pct_male_preferred
    aggregation: mean
    higher_is_better: false

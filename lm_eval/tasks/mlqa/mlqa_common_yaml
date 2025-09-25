@@ -1,9 +1,6 @@
 dataset_path: facebook/mlqa
-<<<<<<< HEAD
 dataset_kwargs:
   trust_remote_code: true
-=======
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 test_split: test
 validation_split: validation
 output_type: generate_until

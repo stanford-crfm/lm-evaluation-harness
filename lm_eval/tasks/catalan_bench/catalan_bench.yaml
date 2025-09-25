@@ -6,7 +6,6 @@ task:
     - copa_ca
     - openbookqa_ca
     - parafraseja
-    - eqbench_ca
     - paws_ca
     - piqa_ca
     - siqa_ca
@@ -23,11 +22,5 @@ task:
     - mgsm_direct_ca
     - phrases_va
     - cocoteros_va
-<<<<<<< HEAD
 metadata:
   version: 2.0
-=======
-    - xnli_va
-metadata:
-  version: 2.1
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7

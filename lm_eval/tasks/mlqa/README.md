@@ -36,7 +36,6 @@ Homepage: `https://github.com/facebookresearch/MLQA`
 
 #### Tasks
 
-<<<<<<< HEAD
 Tasks of the form `mlqa_context-lang_question-lang.yaml`
 * `mlqa_ar_ar.yaml`
 * `mlqa_ar_de.yaml`
@@ -87,58 +86,6 @@ Tasks of the form `mlqa_context-lang_question-lang.yaml`
 * `mlqa_hi_en.yaml`
 * `mlqa_hi_es.yaml`
 * `mlqa_hi_hi.yaml`
-=======
-Tasks of the form `mlqa_context-lang_question-lang`
-* `mlqa_ar_ar`
-* `mlqa_ar_de`
-* `mlqa_ar_vi`
-* `mlqa_ar_zh`
-* `mlqa_ar_en`
-* `mlqa_ar_es`
-* `mlqa_ar_hi`
-* `mlqa_de_ar`
-* `mlqa_de_de`
-* `mlqa_de_vi`
-* `mlqa_de_zh`
-* `mlqa_de_en`
-* `mlqa_de_es`
-* `mlqa_de_hi`
-* `mlqa_vi_ar`
-* `mlqa_vi_de`
-* `mlqa_vi_vi`
-* `mlqa_vi_zh`
-* `mlqa_vi_en`
-* `mlqa_vi_es`
-* `mlqa_vi_hi`
-* `mlqa_zh_ar`
-* `mlqa_zh_de`
-* `mlqa_zh_vi`
-* `mlqa_zh_zh`
-* `mlqa_zh_en`
-* `mlqa_zh_es`
-* `mlqa_zh_hi`
-* `mlqa_en_ar`
-* `mlqa_en_de`
-* `mlqa_en_vi`
-* `mlqa_en_zh`
-* `mlqa_en_en`
-* `mlqa_en_es`
-* `mlqa_en_hi`
-* `mlqa_es_ar`
-* `mlqa_es_de`
-* `mlqa_es_vi`
-* `mlqa_es_zh`
-* `mlqa_es_en`
-* `mlqa_es_es`
-* `mlqa_es_hi`
-* `mlqa_hi_ar`
-* `mlqa_hi_de`
-* `mlqa_hi_vi`
-* `mlqa_hi_zh`
-* `mlqa_hi_en`
-* `mlqa_hi_es`
-* `mlqa_hi_hi`
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 
 ### Checklist
 

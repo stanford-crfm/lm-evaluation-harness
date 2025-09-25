@@ -4,10 +4,7 @@ tag:
 - ntrex_afr-eng_prompt_1
 - afrobench_MT_tasks
 dataset_path: masakhane/ntrex_african
-<<<<<<< HEAD
 dataset_kwargs: {trust_remote_code: True}
-=======
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 output_type: generate_until
 validation_split: test
 fewshot_split: test

@@ -22,11 +22,8 @@ metric_list:
 num_fewshot: 4
 metadata:
   version: 3.0
-<<<<<<< HEAD
 dataset_kwargs:
   trust_remote_code: true
-=======
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 fewshot_config:
   sampler: first_n
   samples: !function utils.list_fewshot_samples

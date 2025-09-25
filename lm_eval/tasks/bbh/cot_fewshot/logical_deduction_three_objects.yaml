@@ -24,7 +24,9 @@ fewshot_config:
       (B) Eli finished last
 
       (C) Eve finished last'
-    target: '(1) Eve finished above Amy: "(above) ? Eve ? Amy ? (below)".
+    target: 'Let''s think step by step.
+
+      (1) Eve finished above Amy: "(above) ? Eve ? Amy ? (below)".
 
       (2) Eli finished below Amy: "(above) ? Amy ? Eli ? (below)".
 
@@ -48,7 +50,9 @@ fewshot_config:
       (B) The green book is the leftmost
 
       (C) The orange book is the leftmost'
-    target: '(1) The green book is to the right of the white book: "(left) ? white ? green
+    target: 'Let''s think step by step.
+
+      (1) The green book is to the right of the white book: "(left) ? white ? green
       ? (right)".
 
       (2) The orange book is the rightmost: "(left) ? white ? green orange (right)".
@@ -72,7 +76,9 @@ fewshot_config:
       (B) The gray book is the leftmost
 
       (C) The white book is the leftmost'
-    target: '(1) The white book is to the left of the gray book: "(left) ? white ? gray ?
+    target: 'Let''s think step by step.
+
+      (1) The white book is to the left of the gray book: "(left) ? white ? gray ?
       (right)".
 
       (2) The red book is the second from the left: "(left) ? white red gray ? (right)".

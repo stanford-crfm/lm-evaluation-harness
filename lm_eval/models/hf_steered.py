@@ -71,7 +71,6 @@ class SteeredModel(HFLM):
         """
         HFLM with a steered forward pass.
 
-<<<<<<< HEAD
         To derive steering vectors from a sparse model loadable with sparsify or sae_lens,
         provide the path to a CSV file with the following columns (example rows are provided below):
 
@@ -79,8 +78,6 @@ class SteeredModel(HFLM):
         sparsify,add,EleutherAI/sae-pythia-70m-32k,layers.3,30,10.0,,,
         sae_lens,add,gemma-scope-2b-pt-res-canonical,layers.20,12082,240.0,layer_20/width_16k/canonical,increase dogs,
 
-=======
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
         To load steering vectors directly, provide the path to a pytorch (.pt) file with content in the following format:
 
         {
@@ -89,23 +86,9 @@ class SteeredModel(HFLM):
                 "steering_coefficient": <float>,
                 "action": <Literal["add", "clamp"]>,
                 "bias": <torch.Tensor | None>,
-<<<<<<< HEAD
             },
             ...
         }
-=======
-                "head_index": <int | None>,
-            },
-            ...
-        }
-
-        To derive steering vectors from a sparse model loadable with sparsify or sae_lens,
-        provide the path to a CSV file with the following columns (example rows are provided below):
-
-        loader,action,sparse_model,hookpoint,feature_index,steering_coefficient,head_index,sae_id,description,
-        sparsify,add,EleutherAI/sae-pythia-70m-32k,layers.3,30,10.0,,,,
-        sae_lens,add,gemma-scope-2b-pt-res-canonical,layers.20,12082,240.0,,layer_20/width_16k/canonical,increase dogs,
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
         """
         super().__init__(pretrained=pretrained, device=device, **kwargs)
 
@@ -122,7 +105,6 @@ class SteeredModel(HFLM):
         hook_to_steer = {}
         for hookpoint, steer_info in steer_config.items():
             action = steer_info["action"]
-<<<<<<< HEAD
             steering_coefficient = steer_info["steering_coefficient"]
             steering_vector = (
                 steer_info["steering_vector"].to(self.device).to(self.model.dtype)
@@ -144,33 +126,6 @@ class SteeredModel(HFLM):
                     steering_vector=steering_vector,
                     value=steering_coefficient,
                     bias=bias,
-=======
-            steering_vector = (
-                steer_info["steering_vector"].to(self.device).to(self.model.dtype)
-            )
-            steering_coefficient = float(steer_info.get("steering_coefficient", 1.0))
-            head_index = steer_info.get("head_index", None)
-            bias = steer_info.get("bias", None)
-            if bias is not None:
-                bias = bias.to(self.device).to(self.model.dtype)
-
-            if action == "add":
-                # Steer the model by adding a multiple of a steering vector to all sequence positions.
-                assert bias is None, "Bias is not supported for the `add` action."
-                hook_to_steer[hookpoint] = partial(
-                    self.add,
-                    vector=steering_vector * steering_coefficient,
-                    head_index=head_index,
-                )
-            elif action == "clamp":
-                # Steer the model by clamping the activations to a value in the direction of the steering vector.
-                hook_to_steer[hookpoint] = partial(
-                    self.clamp,
-                    direction=steering_vector / torch.norm(steering_vector),
-                    value=steering_coefficient,
-                    bias=bias,
-                    head_index=head_index,
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
                 )
             else:
                 raise ValueError(f"Unknown hook type: {action}")
@@ -241,7 +196,6 @@ class SteeredModel(HFLM):
         return steer_data
 
     @classmethod
-<<<<<<< HEAD
     def clamp(
         cls,
         acts: Tensor,
@@ -255,51 +209,11 @@ class SteeredModel(HFLM):
             acts (Tensor): The activations tensor to edit of shape [batch, pos, features]
             steering_vector (Tensor): A direction to clamp of shape [features]
             value (float): Value to clamp the direction to
-=======
-    def add(
-        cls,
-        acts: Tensor,
-        vector: Tensor,
-        head_index: Optional[int],
-    ):
-        """Adds the given vector to the activations.
-
-        Args:
-            acts (Tensor): The activations tensor to edit of shape [batch, pos, ..., features]
-            vector (Tensor): A vector to add of shape [features]
-            head_index (int | None): Optional attention head index to add to
-        """
-        if head_index is not None:
-            acts[:, :, head_index, :] = acts[:, :, head_index, :] + vector
-        else:
-            acts = acts + vector
-
-        return acts
-
-    @classmethod
-    def clamp(
-        cls,
-        acts: Tensor,
-        direction: Tensor,
-        value: float,
-        head_index: Optional[int],
-        bias: Optional[Tensor] = None,
-    ):
-        """Clamps the activations to a given value in a specified direction. The direction
-        must be a unit vector.
-
-        Args:
-            acts (Tensor): The activations tensor to edit of shape [batch, pos, ..., features]
-            direction (Tensor): A direction to clamp of shape [features]
-            value (float): Value to clamp the direction to
-            head_index (int | None): Optional attention head index to clamp
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
             bias (Tensor | None): Optional bias to add to the activations
 
         Returns:
             Tensor: The modified activations with the specified direction clamped
         """
-<<<<<<< HEAD
 
         if bias is not None:
             acts = acts - bias
@@ -309,21 +223,6 @@ class SteeredModel(HFLM):
         orthogonal_component = acts - proj_magnitude * direction
 
         clamped = orthogonal_component + direction * value
-=======
-        if bias is not None:
-            acts = acts - bias
-
-        if head_index is not None:
-            x = acts[:, :, head_index, :]
-            proj = (x * direction).sum(dim=-1, keepdim=True)
-            assert proj == acts @ direction
-
-            clamped = acts.clone()
-            clamped[:, :, head_index, :] = x + direction * (value - proj)
-        else:
-            proj = torch.sum(acts * direction, dim=-1, keepdim=True)
-            clamped = acts + direction * (value - proj)
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 
         if bias is not None:
             return clamped + bias

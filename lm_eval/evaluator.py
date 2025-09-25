@@ -34,7 +34,6 @@ from lm_eval.utils import (
     positional_deprecated,
     setup_logging,
     simple_parse_args_string,
-    wrap_text,
 )
 
 
@@ -44,7 +43,6 @@ if TYPE_CHECKING:
 
 eval_logger = logging.getLogger(__name__)
 
-<<<<<<< HEAD
 
 try:
     import torch
@@ -61,8 +59,6 @@ try:
 except ImportError:
     HAS_TORCH = False
 
-=======
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 
 @positional_deprecated
 def simple_evaluate(
@@ -188,16 +184,8 @@ def simple_evaluate(
         )
     ) and not apply_chat_template:
         eval_logger.warning(
-<<<<<<< HEAD
             "Model appears to be an instruct or chat variant but chat template is not applied. "
             "Recommend setting `apply_chat_template` (optionally `fewshot_as_multiturn`)."
-=======
-            wrap_text(
-                f"""pretrained={model_args.get("pretrained") if isinstance(model_args, dict) else model_args} appears to be an
-                instruct or chat variant but chat template is not applied.
-                Recommend setting `apply_chat_template` (optionally `fewshot_as_multiturn`).""",
-            )
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
         )
 
     if delete_requests_cache:
@@ -262,9 +250,7 @@ def simple_evaluate(
 
         else:
             eval_logger.info(
-                wrap_text(
-                    f"Initializing {model} model, with arguments: {simple_parse_args_string(model_args)}"
-                )
+                f"Initializing {model} model, with arguments: {simple_parse_args_string(model_args)}"
             )
             lm = lm_eval.api.registry.get_model(model).create_from_arg_string(
                 model_args,

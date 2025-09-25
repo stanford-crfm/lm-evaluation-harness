@@ -32,7 +32,9 @@ fewshot_config:
       (D) 4
 
       (E) 5'
-    target: 'This question focuses on age. We know the following: Louis is 7 years old, Bernard
+    target: 'Let''s think step by step.
+
+      This question focuses on age. We know the following: Louis is 7 years old, Bernard
       is 5 years old, Vincent is 9 years old, and Gwen is 8 years old.
 
       Now, we add James to this table: James is 12 years old.
@@ -57,7 +59,9 @@ fewshot_config:
       (D) Gwen
 
       (E) James'
-    target: 'This question focuses on age. We know the following: Louis is 7 years old, Bernard
+    target: 'Let''s think step by step.
+
+      This question focuses on age. We know the following: Louis is 7 years old, Bernard
       is 5 years old, Vincent is 9 years old, and Gwen is 8 years old.
 
       According to the table, Bernard (5) is the youngest amongst them.
@@ -80,7 +84,9 @@ fewshot_config:
       (D) Gwen
 
       (E) James'
-    target: 'This question focuses on the name. We know the following: The names of the penguin
+    target: 'Let''s think step by step.
+
+      This question focuses on the name. We know the following: The names of the penguin
       in the table are Louis, Bernard, Vincent, and Gwen.
 
       When we sort their names alphabetically, we get Bernard, Gwen, Louis, Vincent.

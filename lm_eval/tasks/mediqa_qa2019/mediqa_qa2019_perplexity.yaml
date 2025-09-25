@@ -23,8 +23,5 @@ metric_list:
     higher_is_better: false
 metadata:
   version: 1.0
-<<<<<<< HEAD
 dataset_kwargs:
   trust_remote_code: true
-=======
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7

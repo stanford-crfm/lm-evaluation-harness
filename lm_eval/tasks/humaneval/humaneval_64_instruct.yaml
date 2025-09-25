@@ -1,10 +1,6 @@
 include: humaneval_64.yaml
 task: humaneval_64_instruct
-<<<<<<< HEAD
 doc_to_text: "Write a solution to the following problem and make sure that it passes the tests:\n```{{prompt}}"
-=======
-doc_to_text: "Write a solution to the following problem and make sure that it passes the tests:\n```python\n{{ prompt }}\n```\n"
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 gen_prefix: "Here is the completed function:\n```python\n{{prompt}}\n"
 filter_list:
   - name: "create_test"
@@ -12,8 +8,4 @@ filter_list:
       - function: "custom"
         filter_fn: !function utils.build_predictions_instruct
 metadata:
-<<<<<<< HEAD
   version: 2.0
-=======
-  version: 3.0
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7

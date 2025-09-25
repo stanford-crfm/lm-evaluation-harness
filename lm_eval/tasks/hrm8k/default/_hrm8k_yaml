@@ -11,11 +11,7 @@ generation_kwargs:
     - "<|end_of_text|>"
     - "<|endoftext|>"
     - "<|im_end|>"
-<<<<<<< HEAD
   max_gen_toks: 512
-=======
-  max_gen_toks: 2048
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
   do_sample: false
   temperature: 0
 metric_list:
@@ -23,8 +19,4 @@ metric_list:
     aggregation: mean
     higher_is_better: true
 metadata:
-<<<<<<< HEAD
   version: 1.0
-=======
-  version: 1.1
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7

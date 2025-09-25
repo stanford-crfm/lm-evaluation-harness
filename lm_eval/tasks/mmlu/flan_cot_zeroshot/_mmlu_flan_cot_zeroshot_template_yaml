@@ -1,4 +1,4 @@
-dataset_path: cais/mmlu
+dataset_path: hails/mmlu_no_train # a copy of `cais/mmlu` with no auxiliary_train split
 validation_split: validation
 fewshot_split: dev
 output_type: generate_until
@@ -34,3 +34,5 @@ metric_list:
     ignore_punctuation: true
 metadata:
   version: 3.0
+dataset_kwargs:
+  trust_remote_code: true

@@ -111,11 +111,7 @@ def parse_math_answer(raw_string):
         return retval
 
     def get_answer_with_dollar_sign(s):
-<<<<<<< HEAD
         first_pattern = "\$(.*)\$"
-=======
-        first_pattern = r"\$(.*)\$"
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
         last_match = None
         matches = re.findall(first_pattern, s)
         if matches:
@@ -131,11 +127,7 @@ def parse_math_answer(raw_string):
             if "\\n" in last_match:
                 last_match = last_match.split("\\n")[0]
         else:
-<<<<<<< HEAD
             pattern = "(?:\\$)?\d+(?:\.\d+)?(?![\w\d])"
-=======
-            pattern = "(?:\\$)?\\d+(?:\\.\\d+)?(?![\\w\\d])"
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
             matches = re.findall(pattern, s)
             if matches:
                 last_match = matches[-1]
@@ -258,11 +250,7 @@ def _strip_string(string):
 
     # remove percentage
     string = string.replace("\\%", "")
-<<<<<<< HEAD
     string = string.replace("\%", "")
-=======
-    string = string.replace(r"\%", "")
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 
     # " 0." equivalent to " ." and "{0." equivalent to "{." Alternatively, add "0" if "." is the start of the string
     string = string.replace(" .", " 0.")

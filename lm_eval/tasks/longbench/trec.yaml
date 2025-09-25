@@ -5,29 +5,17 @@ task: longbench_trec
 dataset_path: THUDM/LongBench
 test_split: test
 dataset_name: trec
-<<<<<<< HEAD
 doc_to_text: 'Please determine the type of the question below. Here are some examples of questions.\n\n{{context}}\n{{input}}'
-=======
-doc_to_text: "Please determine the type of the question below. Here are some examples of questions.\n\n{{context}}\n{{input}}"
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 doc_to_target: '{{answers}}'
 process_results: !function metrics.get_classification_score
 generation_kwargs:
   max_gen_toks: 64
   temperature: 1
-<<<<<<< HEAD
   do_sample: True
-=======
-  do_sample: False
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
   until: ["\n"]
 metric_list:
   - metric: "classification_score"
     aggregation: mean
     higher_is_better: True
 metadata:
-<<<<<<< HEAD
   version: 3.0
-=======
-  version: 4.0
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7

@@ -1,4 +1,5 @@
-tag: lambada_multilingual_stablelm
+group:
+  - lambada_multilingual_stablelm
 task: lambada_openai_mt_stablelm_en
 dataset_path: marcob/lambada_multilingual
 dataset_name: en

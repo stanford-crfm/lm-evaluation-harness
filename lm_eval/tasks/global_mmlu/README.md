@@ -12,11 +12,7 @@ Global-MMLU-Lite is a balanced collection of culturally sensitive and culturally
 
 Homepage: \
 [https://huggingface.co/datasets/CohereForAI/Global-MMLU](https://huggingface.co/datasets/CohereForAI/Global-MMLU) \
-<<<<<<< HEAD
 [https://huggingface.co/datasets/CohereLabs/Global-MMLU-Lite](https://huggingface.co/datasets/CohereLabs/Global-MMLU-Lite)
-=======
-[https://huggingface.co/datasets/CohereForAI/Global-MMLU-Lite](https://huggingface.co/datasets/CohereForAI/Global-MMLU-Lite)
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 
 
 #### Groups

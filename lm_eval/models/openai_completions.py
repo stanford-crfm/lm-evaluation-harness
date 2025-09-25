@@ -16,8 +16,8 @@ eval_logger = logging.getLogger(__name__)
 class LocalCompletionsAPI(TemplateAPI):
     def __init__(
         self,
-        base_url: str = None,
-        tokenizer_backend: str = "huggingface",
+        base_url=None,
+        tokenizer_backend="huggingface",
         **kwargs,
     ):
         super().__init__(
@@ -108,9 +108,9 @@ class LocalCompletionsAPI(TemplateAPI):
 class LocalChatCompletion(LocalCompletionsAPI):
     def __init__(
         self,
-        base_url: str = None,
-        tokenizer_backend: str = None,
-        tokenized_requests: bool = False,
+        base_url=None,
+        tokenizer_backend=None,
+        tokenized_requests=False,
         **kwargs,
     ):
         eval_logger.warning(
@@ -236,7 +236,6 @@ class OpenAIChatCompletion(LocalChatCompletion):
             eval_logger.warning(
                 "o1 models do not support `stop` and only support temperature=1"
             )
-
         super().__init__(
             base_url=base_url,
             tokenizer_backend=tokenizer_backend,
@@ -289,7 +288,7 @@ class OpenAIChatCompletion(LocalChatCompletion):
             "seed": seed,
             **gen_kwargs,
         }
-        if "o1" in self.model or "5" in self.model:
+        if "o1" in self.model:
             output.pop("stop")
             output["temperature"] = 1
         elif "o3" in self.model:

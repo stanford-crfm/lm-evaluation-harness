@@ -26,26 +26,6 @@ HIGHER_IS_BETTER_SYMBOLS = {
 }
 
 
-<<<<<<< HEAD
-=======
-def wrap_text(string: str, width: int = 140, **kwargs) -> Optional[str]:
-    """
-    Wraps the given string to the specified width.
-    """
-    import textwrap
-
-    return textwrap.fill(
-        inspect.cleandoc(string),
-        width=width,
-        initial_indent="",
-        subsequent_indent=" " * 8,
-        break_long_words=False,
-        break_on_hyphens=False,
-        **kwargs,
-    )
-
-
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 def setup_logging(verbosity=logging.INFO):
     # Configure the root logger
     class CustomFormatter(logging.Formatter):
@@ -472,15 +452,9 @@ def import_function(loader: yaml.Loader, node, yaml_path: Path):
     if isinstance(module_name, list):
         module_name = ".".join(module_name)
     module_path = yaml_path.parent / f"{module_name}.py"
-<<<<<<< HEAD
 
     spec = importlib.util.spec_from_file_location(module_name, module_path.as_posix())
 
-=======
-
-    spec = importlib.util.spec_from_file_location(module_name, module_path.as_posix())
-
->>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
     if spec is None:
         raise ImportError(f"Could not import module {module_name} from {module_path}.")
     module = importlib.util.module_from_spec(spec)
