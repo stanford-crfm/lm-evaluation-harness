@@ -15,9 +15,12 @@ metric_list:
   - metric: acc
     aggregation: mean
     higher_is_better: true
+<<<<<<< HEAD
   - metric: choice_logprob
     aggregation: mean
     higher_is_better: true
+=======
+>>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 metadata:
   version: 1.0
   num_fewshot: 0

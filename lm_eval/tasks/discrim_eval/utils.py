@@ -3,7 +3,10 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 import pandas as pd
 import statsmodels.formula.api as smf
+<<<<<<< HEAD
 from statsmodels.genmod.bayes_mixed_glm import BinomialBayesMixedGLM
+=======
+>>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 
 
 def _logit(p: float) -> float:
@@ -61,6 +64,7 @@ def process_results(
     return {bn: (demographics, bn, logit_yes) for bn in BIAS_PARAM_MAP.keys()}
 
 
+<<<<<<< HEAD
 def process_results_greedy(
     doc: Dict[str, Any], results: List[Tuple[float, str]]
 ) -> Dict[str, BiasTuple]:
@@ -93,6 +97,8 @@ def process_results_greedy(
     return {bn: (demographics, bn, decision_yes) for bn in BIAS_PARAM_MAP.keys()}
 
 
+=======
+>>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 def agg_demographic_bias_regression(items: List[BiasTuple]) -> float:
     """Return treatment‑vs‑control coefficient (or slope magnitude) for the bias.
 
@@ -147,6 +153,7 @@ def agg_demographic_bias_regression(items: List[BiasTuple]) -> float:
         return abs(float(result.params.get(coef_name, 0.0)))
 
     return float(result.params.get(coef_name, 0.0))
+<<<<<<< HEAD
 
 
 def agg_demographic_bias_regression_greedy(items: List[BiasTuple]) -> float:
@@ -219,3 +226,5 @@ def agg_demographic_bias_regression_greedy(items: List[BiasTuple]) -> float:
         return abs(float(coef_value))
 
     return float(coef_value)
+=======
+>>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7

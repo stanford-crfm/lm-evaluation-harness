@@ -2,8 +2,22 @@ from . import (
     anthropic_llms,
     api_models,
     gguf,
+<<<<<<< HEAD
     ibm_watsonx_ai,
     openai_completions,
+=======
+    hf_audiolm,
+    hf_steered,
+    hf_vlms,
+    huggingface,
+    ibm_watsonx_ai,
+    mamba_lm,
+    nemo_lm,
+    neuron_optimum,
+    openai_completions,
+    optimum_ipex,
+    optimum_lm,
+>>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
     sglang_causallms,
     sglang_generate_API,
     textsynth,

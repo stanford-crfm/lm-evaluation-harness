@@ -28,9 +28,14 @@ class OptimumLM(HFLM):
         **kwargs,
     ) -> None:
         if "backend" in kwargs:
+<<<<<<< HEAD
             # optimum currently only supports causal models
             assert kwargs["backend"] == "causal", (
                 "Currently, only OVModelForCausalLM is supported."
+=======
+            assert kwargs["backend"] in ["causal", "seq2seq"], (
+                "Currently, only OVModelForCausalLM or OVModelForSeq2SeqLM are supported."
+>>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
             )
 
         self.openvino_device = device
@@ -54,7 +59,7 @@ class OptimumLM(HFLM):
                 "package `optimum` is not installed. Please install it via `pip install optimum[openvino]`"
             )
         else:
-            from optimum.intel.openvino import OVModelForCausalLM
+            from optimum.intel.openvino import OVModelForCausalLM, OVModelForSeq2SeqLM
 
         model_kwargs = kwargs if kwargs else {}
         if "ov_config" in model_kwargs:
@@ -76,17 +81,22 @@ class OptimumLM(HFLM):
                 model_kwargs["ov_config"]["MODEL_DISTRIBUTION_POLICY"] = (
                     "PIPELINE_PARALLEL"
                 )
+<<<<<<< HEAD
         model_file = Path(pretrained) / "openvino_model.xml"
         if model_file.exists():
             export = False
         else:
             export = True
+=======
+>>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 
-        self._model = OVModelForCausalLM.from_pretrained(
+        model_cls = (
+            OVModelForCausalLM if self.backend == "causal" else OVModelForSeq2SeqLM
+        )
+        self._model = model_cls.from_pretrained(
             pretrained,
             revision=revision,
             trust_remote_code=trust_remote_code,
-            export=export,
             device=self.openvino_device.upper(),
             **model_kwargs,
         )

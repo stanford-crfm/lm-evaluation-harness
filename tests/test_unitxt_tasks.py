@@ -7,6 +7,14 @@ from lm_eval.api.task import ConfigurableTask
 from tests.test_tasks import BaseTasks, task_class
 
 
+<<<<<<< HEAD
+=======
+@pytest.fixture()
+def limit() -> int:
+    return 10
+
+
+>>>>>>> de496b80d60c267a2d7eea3b3c1dc40f693daee7
 @pytest.mark.parametrize(
     "task_class",
     task_class(
