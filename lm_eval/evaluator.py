@@ -8,6 +8,7 @@ from collections import defaultdict
 from typing import TYPE_CHECKING, List, Optional, Union
 
 import numpy as np
+import torch
 
 import lm_eval.api.metrics
 import lm_eval.api.registry
@@ -34,6 +35,7 @@ from lm_eval.utils import (
     positional_deprecated,
     setup_logging,
     simple_parse_args_string,
+    wrap_text,
 )
 
 
@@ -42,22 +44,6 @@ if TYPE_CHECKING:
     from lm_eval.api.task import Task
 
 eval_logger = logging.getLogger(__name__)
-
-
-try:
-    import torch
-
-    HAS_TORCH = True
-except ImportError:
-    HAS_TORCH = False
-
-
-try:
-    import torch
-
-    HAS_TORCH = True
-except ImportError:
-    HAS_TORCH = False
 
 
 @positional_deprecated
@@ -184,8 +170,11 @@ def simple_evaluate(
         )
     ) and not apply_chat_template:
         eval_logger.warning(
-            "Model appears to be an instruct or chat variant but chat template is not applied. "
-            "Recommend setting `apply_chat_template` (optionally `fewshot_as_multiturn`)."
+            wrap_text(
+                f"""pretrained={model_args.get("pretrained") if isinstance(model_args, dict) else model_args} appears to be an
+                instruct or chat variant but chat template is not applied.
+                Recommend setting `apply_chat_template` (optionally `fewshot_as_multiturn`).""",
+            )
         )
 
     if delete_requests_cache:
@@ -203,9 +192,8 @@ def simple_evaluate(
         np.random.seed(numpy_random_seed)
 
     if torch_random_seed is not None:
-        if HAS_TORCH:
-            seed_message.append(f"Setting torch manual seed to {torch_random_seed}")
-            torch.manual_seed(torch_random_seed)
+        seed_message.append(f"Setting torch manual seed to {torch_random_seed}")
+        torch.manual_seed(torch_random_seed)
 
     if fewshot_random_seed is not None:
         seed_message.append(f"Setting fewshot manual seed to {fewshot_random_seed}")
@@ -250,7 +238,9 @@ def simple_evaluate(
 
         else:
             eval_logger.info(
-                f"Initializing {model} model, with arguments: {simple_parse_args_string(model_args)}"
+                wrap_text(
+                    f"Initializing {model} model, with arguments: {simple_parse_args_string(model_args)}"
+                )
             )
             lm = lm_eval.api.registry.get_model(model).create_from_arg_string(
                 model_args,
@@ -563,8 +553,6 @@ def evaluate(
             requests[reqtype].append(instance)
 
         if lm.world_size > 1:
-            if not HAS_TORCH:
-                raise ImportError("torch is required for distributed evaluation")
             instances_rnk = torch.tensor(len(task._instances), device=lm.device)
             gathered_item = (
                 lm.accelerator.gather(instances_rnk).cpu().detach().numpy().tolist()
@@ -673,9 +661,6 @@ def evaluate(
                     task_output.sample_metrics[(metric, filter_key)].append(value)
 
     if WORLD_SIZE > 1:
-        if not HAS_TORCH:
-            raise ImportError("torch is required for distributed evaluation")
-
         # if multigpu, then gather data across all ranks to rank 0
         # first gather logged samples across all ranks
         for task_output in eval_tasks:

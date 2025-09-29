@@ -1,9 +1,19 @@
 from . import (
     anthropic_llms,
     api_models,
+    dummy,
     gguf,
+    hf_audiolm,
+    hf_steered,
+    hf_vlms,
+    huggingface,
     ibm_watsonx_ai,
+    mamba_lm,
+    nemo_lm,
+    neuron_optimum,
     openai_completions,
+    optimum_ipex,
+    optimum_lm,
     sglang_causallms,
     sglang_generate_API,
     textsynth,
@@ -12,36 +22,7 @@ from . import (
 )
 
 
-__all__ = [
-    "anthropic_llms",
-    "dummy",
-    "gguf",
-    "openai_completions",
-    "textsynth",
-    "vllm_causallms",
-]
-
-
-# try importing all modules that need torch
-import importlib
-
-
-for module_that_needs_torch in [
-    "hf_audiolm",
-    "hf_steered",
-    "hf_vlms",
-    "huggingface",
-    "mamba_lm",
-    "nemo_lm",
-    "neuralmagic",
-    "neuron_optimum",
-    "optimum_lm",
-]:
-    try:
-        importlib.import_module(f".{module_that_needs_torch}", __name__)
-        __all__.append(module_that_needs_torch)
-    except ImportError:
-        pass
+# TODO: implement __all__
 
 
 try:
