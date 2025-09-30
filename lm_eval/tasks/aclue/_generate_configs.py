@@ -65,9 +65,11 @@ if __name__ == "__main__":
 
         yaml_dict = {
             "include": base_yaml_name,
-            "task": f"aclue_{args.task_prefix}_{subject_eng}"
-            if args.task_prefix != ""
-            else f"aclue_{subject_eng}",
+            "task": (
+                f"aclue_{args.task_prefix}_{subject_eng}"
+                if args.task_prefix != ""
+                else f"aclue_{subject_eng}"
+            ),
             "dataset_name": subject_eng,
             "description": description,
         }

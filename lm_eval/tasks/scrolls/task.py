@@ -263,9 +263,11 @@ class _SCROLLSMultipleChoiceTask(_SCROLLSTask):
             Instance(
                 request_type="loglikelihood",
                 doc=doc,
-                arguments=(ctx, " {}".format(choice))
-                if not apply_chat_template
-                else (ctx, "{}".format(choice)),
+                arguments=(
+                    (ctx, " {}".format(choice))
+                    if not apply_chat_template
+                    else (ctx, "{}".format(choice))
+                ),
                 idx=i,
                 **kwargs,
             )
@@ -344,9 +346,9 @@ class Qasper(_SCROLLSTask):
                 Instance(
                     request_type="loglikelihood",
                     doc=doc,
-                    arguments=(ctx, " yes")
-                    if not apply_chat_template
-                    else (ctx, "yes"),
+                    arguments=(
+                        (ctx, " yes") if not apply_chat_template else (ctx, "yes")
+                    ),
                     idx=0,
                     **kwargs,
                 ),

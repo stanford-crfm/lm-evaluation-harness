@@ -69,10 +69,12 @@ class HFLM(TemplateLM):
         # override whether the model should be treated as decoder-only (causal) or encoder-decoder (seq2seq)
         revision: str | None = "main",
         subfolder: str = "",
-        tokenizer: str
-        | transformers.PreTrainedTokenizer
-        | transformers.PreTrainedTokenizerFast
-        | None = None,
+        tokenizer: (
+            str
+            | transformers.PreTrainedTokenizer
+            | transformers.PreTrainedTokenizerFast
+            | None
+        ) = None,
         truncation: bool | None = False,
         logits_cache: bool = True,
         max_length: int | None = None,
@@ -657,9 +659,9 @@ class HFLM(TemplateLM):
                     pretrained,
                     trust_remote_code=trust_remote_code,
                     model_basename=None if autogptq is True else Path(autogptq).stem,
-                    use_safetensors=True
-                    if autogptq is True
-                    else autogptq.endswith(".safetensors"),
+                    use_safetensors=(
+                        True if autogptq is True else autogptq.endswith(".safetensors")
+                    ),
                     **model_kwargs,
                 )
 
@@ -736,10 +738,12 @@ class HFLM(TemplateLM):
     def _create_tokenizer(
         self,
         pretrained: str | transformers.PreTrainedModel,
-        tokenizer: str
-        | transformers.PreTrainedTokenizer
-        | transformers.PreTrainedTokenizerFast
-        | None,
+        tokenizer: (
+            str
+            | transformers.PreTrainedTokenizer
+            | transformers.PreTrainedTokenizerFast
+            | None
+        ),
         revision: str | None = "main",
         trust_remote_code: bool | None = False,
         use_fast_tokenizer: bool | None = True,
@@ -1162,9 +1166,9 @@ class HFLM(TemplateLM):
         re_ord = Collator(
             requests,
             sort_fn=_collate,
-            group_by="contexts"
-            if self.backend == "causal" and self.logits_cache
-            else None,
+            group_by=(
+                "contexts" if self.backend == "causal" and self.logits_cache else None
+            ),
             group_fn=_lookup_one_token_cont,
         )
 
@@ -1495,9 +1499,11 @@ class HFLM(TemplateLM):
                 s = postprocess_generated_text(
                     generation=s,
                     stop=until,
-                    think_end_token=self.think_end_token
-                    if isinstance(self.think_end_token, str)
-                    else None,
+                    think_end_token=(
+                        self.think_end_token
+                        if isinstance(self.think_end_token, str)
+                        else None
+                    ),
                 )
                 res.append(s)
 

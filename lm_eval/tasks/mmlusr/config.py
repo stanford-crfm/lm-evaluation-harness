@@ -127,12 +127,16 @@ if __name__ == "__main__":
 
             yaml_dict = {
                 "include": base_yaml_name,
-                "tag": f"mmlusr_{args.group_prefix}{group}_{category}"
-                if args.group_prefix
-                else f"mmlusr_{group}_{category}",
-                "task": f"mmlusr_{args.task_prefix}{group}_{subject}"
-                if args.task_prefix
-                else f"mmlusr_{group}_{subject}",
+                "tag": (
+                    f"mmlusr_{args.group_prefix}{group}_{category}"
+                    if args.group_prefix
+                    else f"mmlusr_{group}_{category}"
+                ),
+                "task": (
+                    f"mmlusr_{args.task_prefix}{group}_{subject}"
+                    if args.task_prefix
+                    else f"mmlusr_{group}_{subject}"
+                ),
                 "task_alias": subject.replace("_", " "),
                 "description": description,
                 "dataset_name": f"{group}_{subject}",

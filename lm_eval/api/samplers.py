@@ -113,9 +113,12 @@ class ContextSampler:
                 labeled_examples += (
                     str(doc_target[0])
                     if isinstance(doc_target, list)
-                    else doc_target
-                    if self.config.doc_to_choice is None or isinstance(doc_target, str)
-                    else str(self.doc_to_choice(doc)[doc_target])
+                    else (
+                        doc_target
+                        if self.config.doc_to_choice is None
+                        or isinstance(doc_target, str)
+                        else str(self.doc_to_choice(doc)[doc_target])
+                    )
                 )
                 labeled_examples += self.fewshot_delimiter
 
@@ -151,21 +154,27 @@ class ContextSampler:
                 chat_history.append(
                     {
                         "role": "user",
-                        "content": doc_content
-                        if self.config.doc_to_choice is None
-                        or isinstance(doc_content, str)
-                        else self.doc_to_choice(doc)[doc_content],
+                        "content": (
+                            doc_content
+                            if self.config.doc_to_choice is None
+                            or isinstance(doc_content, str)
+                            else self.doc_to_choice(doc)[doc_content]
+                        ),
                     }
                 )
                 chat_history.append(
                     {
                         "role": "assistant",
-                        "content": prefix + str(doc_target[0])
-                        if isinstance(doc_target, list)
-                        else prefix + doc_target
-                        if self.config.doc_to_choice is None
-                        or isinstance(doc_target, str)
-                        else prefix + str(self.doc_to_choice(doc)[doc_target]),
+                        "content": (
+                            prefix + str(doc_target[0])
+                            if isinstance(doc_target, list)
+                            else (
+                                prefix + doc_target
+                                if self.config.doc_to_choice is None
+                                or isinstance(doc_target, str)
+                                else prefix + str(self.doc_to_choice(doc)[doc_target])
+                            )
+                        ),
                     }
                 )
         else:

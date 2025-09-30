@@ -449,10 +449,17 @@ class NeMoLM(LM):
                 .numpy()
             )
 
-            for token_ids, greedy_tokens, logprobs, ctxlen, contlen, (
-                cache_key,
-                _,
-                _,
+            for (
+                token_ids,
+                greedy_tokens,
+                logprobs,
+                ctxlen,
+                contlen,
+                (
+                    cache_key,
+                    _,
+                    _,
+                ),
             ) in zip(
                 batch_token_ids,
                 batch_greedy_tokens,

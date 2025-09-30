@@ -20,8 +20,7 @@ def prompt_func(mode, lang):
         "Summary: ",
         "prompt_4": f"Summarize this {lang.capitalize()} document:\n" + r"{{'text'}}\n"
         "Summary: ",
-        "prompt_5": f"{lang.capitalize()} document: " + r"{{'text'}}\n"
-        "Summary: ",
+        "prompt_5": f"{lang.capitalize()} document: " + r"{{'text'}}\n" "Summary: ",
     }
     return prompt_map[mode]
 

@@ -28,7 +28,10 @@ class OptimumLM(HFLM):
         **kwargs,
     ) -> None:
         if "backend" in kwargs:
-            assert kwargs["backend"] in ["causal", "seq2seq"], (
+            assert kwargs["backend"] in [
+                "causal",
+                "seq2seq",
+            ], (
                 "Currently, only OVModelForCausalLM or OVModelForSeq2SeqLM are supported."
             )
 

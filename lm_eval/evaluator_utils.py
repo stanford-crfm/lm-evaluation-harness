@@ -116,9 +116,11 @@ class TaskOutput:
             if isinstance(bootstrap_iters, int):
                 stderr_fn = stderr_for_metric(
                     metric=agg_fn,
-                    bootstrap_iters=min(bootstrap_iters, 100)
-                    if metric in ["bleu", "chrf", "ter"]
-                    else bootstrap_iters,
+                    bootstrap_iters=(
+                        min(bootstrap_iters, 100)
+                        if metric in ["bleu", "chrf", "ter"]
+                        else bootstrap_iters
+                    ),
                 )
                 self.agg_metrics[f"{metric}_stderr,{filter_key}"] = (
                     stderr_fn(items) if (stderr_fn and len(items) > 1) else "N/A"
@@ -250,9 +252,11 @@ def prepare_print_tasks(
         return dict(
             sorted(
                 task_dict.items(),
-                key=lambda item: item[0].group_name
-                if isinstance(item[0], ConfigurableGroup)
-                else item[0],
+                key=lambda item: (
+                    item[0].group_name
+                    if isinstance(item[0], ConfigurableGroup)
+                    else item[0]
+                ),
             )
         )
 

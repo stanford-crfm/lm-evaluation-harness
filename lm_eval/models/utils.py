@@ -577,9 +577,11 @@ class Collator:
                     hashable_dict = tuple(
                         (
                             key,
-                            tuple(value)
-                            if isinstance(value, collections.abc.Iterable)
-                            else value,
+                            (
+                                tuple(value)
+                                if isinstance(value, collections.abc.Iterable)
+                                else value
+                            ),
                         )
                         for key, value in sorted(fn(ob).items())
                     )

@@ -747,12 +747,14 @@ class VLLM(TemplateLM):
             return getattr(logprob, "logprob", logprob)
 
         continuation_logprobs_dicts = [
-            {
-                token: coerce_logprob_to_num(logprob)
-                for token, logprob in logprob_dict.items()
-            }
-            if logprob_dict is not None
-            else None
+            (
+                {
+                    token: coerce_logprob_to_num(logprob)
+                    for token, logprob in logprob_dict.items()
+                }
+                if logprob_dict is not None
+                else None
+            )
             for logprob_dict in continuation_logprobs_dicts
         ]
 

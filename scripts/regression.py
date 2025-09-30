@@ -148,9 +148,11 @@ def main():
     args.tasks = (
         ALL_TASKS
         if args.tasks == "all_tasks"
-        else utils.pattern_match(args.tasks.split(","), ALL_TASKS)
-        if isinstance(args.tasks, str)
-        else args.tasks
+        else (
+            utils.pattern_match(args.tasks.split(","), ALL_TASKS)
+            if isinstance(args.tasks, str)
+            else args.tasks
+        )
     )
 
     global initial_branch
