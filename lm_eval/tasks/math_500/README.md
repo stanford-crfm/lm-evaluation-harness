@@ -33,4 +33,3 @@ Please cite the original MATH dataset when using this benchmark:
 
 - `math_500`: Computes the negative log-likelihood of the gold solution given the
   problem statement.
-
