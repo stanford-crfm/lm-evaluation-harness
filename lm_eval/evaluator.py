@@ -8,7 +8,10 @@ from collections import defaultdict
 from typing import TYPE_CHECKING, List, Optional, Union
 
 import numpy as np
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None
 
 import lm_eval.api.metrics
 import lm_eval.api.registry

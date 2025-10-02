@@ -1,6 +1,9 @@
 from typing import Optional, Union
 
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None
 
 import lm_eval.models.utils
 from lm_eval.api.registry import register_model

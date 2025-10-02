@@ -2,7 +2,10 @@ import itertools
 
 import numpy as np
 import pytest
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None
 
 from lm_eval.api.metrics import (
     aggregate_subtask_metrics,

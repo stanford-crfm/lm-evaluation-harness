@@ -8,7 +8,10 @@ import logging
 import os
 from typing import List
 
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None
 from transformers import (
     pipeline as trans_pipeline,
 )

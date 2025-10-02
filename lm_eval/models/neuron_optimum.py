@@ -3,8 +3,12 @@ import logging
 from collections import defaultdict
 from typing import List, Optional, Union
 
-import torch
-import torch.nn.functional as F
+try:
+    import torch
+    import torch.nn.functional as F
+except ImportError:
+    torch = None
+    F = None
 import transformers
 from packaging import version
 from tqdm import tqdm

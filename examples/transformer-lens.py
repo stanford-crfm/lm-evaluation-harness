@@ -1,7 +1,11 @@
 import warnings
 
-import torch
-import torch.nn as nn
+try:
+    import torch
+    import torch.nn as nn
+except ImportError:
+    torch = None
+    nn = None
 from transformer_lens import HookedTransformer
 from transformers import AutoConfig
 

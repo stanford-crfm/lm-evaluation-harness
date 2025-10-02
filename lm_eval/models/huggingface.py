@@ -9,15 +9,25 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 
 import jinja2
-import torch
-import torch.nn.functional as F
+try:
+    import torch
+    import torch.nn.functional as F
+except ImportError:
+    torch = None
+    F = None
 import transformers
-from accelerate import (
-    Accelerator,
-    InitProcessGroupKwargs,
-    find_executable_batch_size,
-)
-from accelerate.utils import get_max_memory
+try:
+    from accelerate import (
+        Accelerator,
+        InitProcessGroupKwargs,
+        find_executable_batch_size,
+    )
+    from accelerate.utils import get_max_memory
+except ImportError:
+    Accelerator = None
+    InitProcessGroupKwargs = None
+    find_executable_batch_size = None
+    get_max_memory = None
 from huggingface_hub import HfApi
 from packaging import version
 from packaging.version import parse as vparse

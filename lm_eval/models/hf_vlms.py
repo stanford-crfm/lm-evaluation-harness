@@ -2,8 +2,12 @@ import copy
 import logging
 from typing import Dict, List, Optional, Tuple, Union
 
-import torch
-import torch.nn.functional as F
+try:
+    import torch
+    import torch.nn.functional as F
+except ImportError:
+    torch = None
+    F = None
 import transformers
 from tqdm import tqdm
 from transformers import BatchEncoding

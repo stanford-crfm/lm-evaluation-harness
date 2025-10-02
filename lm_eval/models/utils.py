@@ -20,7 +20,10 @@ from typing import (
     Union,
 )
 
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None
 import transformers
 
 

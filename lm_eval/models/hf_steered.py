@@ -3,9 +3,17 @@ from functools import partial
 from pathlib import Path
 from typing import Any, Callable, Generator, Optional, Union
 
-import torch
-from peft.peft_model import PeftModel
-from torch import Tensor, nn
+try:
+    import torch
+    from torch import Tensor, nn
+except ImportError:
+    torch = None
+    Tensor = None
+    nn = None
+try:
+    from peft.peft_model import PeftModel
+except ImportError:
+    PeftModel = None
 from transformers import PreTrainedModel
 
 from lm_eval.api.registry import register_model
