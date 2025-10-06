@@ -45,12 +45,12 @@ metadata:
         assert any(
             metric["metric"] == "f1" for metric in arc_easy_task.config["metric_list"]
         ), "Custom task should have f1 metric"
-        assert "Custom Question:" in arc_easy_task.config["doc_to_text"], (
-            "Custom task should have custom doc_to_text"
-        )
-        assert arc_easy_task.config["metadata"]["version"] == 2.0, (
-            "Custom task should have version 2.0"
-        )
+        assert (
+            "Custom Question:" in arc_easy_task.config["doc_to_text"]
+        ), "Custom task should have custom doc_to_text"
+        assert (
+            arc_easy_task.config["metadata"]["version"] == 2.0
+        ), "Custom task should have version 2.0"
 
         # Test 2: Verify default is used when no custom path is provided
         default_task_manager = tasks.TaskManager(include_defaults=True)
@@ -62,9 +62,9 @@ metadata:
             metric["metric"] == "f1"
             for metric in default_arc_easy.config.get("metric_list", [])
         ), "Default task should not have f1 metric"
-        assert "Custom Question:" not in default_arc_easy.config["doc_to_text"], (
-            "Default task should not have custom doc_to_text"
-        )
+        assert (
+            "Custom Question:" not in default_arc_easy.config["doc_to_text"]
+        ), "Default task should not have custom doc_to_text"
 
 
 def test_include_defaults_false_with_custom_path():
@@ -103,22 +103,22 @@ metadata:
         )
 
         # Custom task should be available
-        assert "custom_arc_task" in task_manager.all_tasks, (
-            "Custom task should be available when include_defaults=False"
-        )
+        assert (
+            "custom_arc_task" in task_manager.all_tasks
+        ), "Custom task should be available when include_defaults=False"
 
         # Default tasks should NOT be available
-        assert "arc_easy" not in task_manager.all_tasks, (
-            "Default arc_easy should not be available when include_defaults=False"
-        )
-        assert "arc_challenge" not in task_manager.all_tasks, (
-            "Default arc_challenge should not be available when include_defaults=False"
-        )
+        assert (
+            "arc_easy" not in task_manager.all_tasks
+        ), "Default arc_easy should not be available when include_defaults=False"
+        assert (
+            "arc_challenge" not in task_manager.all_tasks
+        ), "Default arc_challenge should not be available when include_defaults=False"
 
         # Check that only our custom task is present
-        assert len(task_manager.all_tasks) == 1, (
-            f"Should only have 1 task, but found {len(task_manager.all_tasks)}"
-        )
+        assert (
+            len(task_manager.all_tasks) == 1
+        ), f"Should only have 1 task, but found {len(task_manager.all_tasks)}"
 
         # Check task metadata is correctly loaded
         task_info = task_manager.task_index["custom_arc_task"]
@@ -164,15 +164,15 @@ metadata:
         task_manager = tasks.TaskManager(include_defaults=True, include_path=custom_dir)
 
         # Both custom and default tasks should be available
-        assert "arc_custom_generation" in task_manager.all_tasks, (
-            "New custom task should be available"
-        )
-        assert "arc_easy" in task_manager.all_tasks, (
-            "Default arc_easy should still be available"
-        )
-        assert "arc_challenge" in task_manager.all_tasks, (
-            "Default arc_challenge should still be available"
-        )
+        assert (
+            "arc_custom_generation" in task_manager.all_tasks
+        ), "New custom task should be available"
+        assert (
+            "arc_easy" in task_manager.all_tasks
+        ), "Default arc_easy should still be available"
+        assert (
+            "arc_challenge" in task_manager.all_tasks
+        ), "Default arc_challenge should still be available"
 
         # Check task metadata
         custom_task_info = task_manager.task_index["arc_custom_generation"]
@@ -181,6 +181,6 @@ metadata:
 
         # Verify the counts - should have more tasks than just defaults
         default_only_manager = tasks.TaskManager(include_defaults=True)
-        assert len(task_manager.all_tasks) > len(default_only_manager.all_tasks), (
-            "Should have more tasks when including custom path"
-        )
+        assert len(task_manager.all_tasks) > len(
+            default_only_manager.all_tasks
+        ), "Should have more tasks when including custom path"

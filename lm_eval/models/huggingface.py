@@ -9,15 +9,29 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 
 import jinja2
-import torch
-import torch.nn.functional as F
+
+
+try:
+    import torch
+    import torch.nn.functional as F
+except ImportError:
+    torch = None
+    F = None
 import transformers
-from accelerate import (
-    Accelerator,
-    InitProcessGroupKwargs,
-    find_executable_batch_size,
-)
-from accelerate.utils import get_max_memory
+
+
+try:
+    from accelerate import (
+        Accelerator,
+        InitProcessGroupKwargs,
+        find_executable_batch_size,
+    )
+    from accelerate.utils import get_max_memory
+except ImportError:
+    Accelerator = None
+    InitProcessGroupKwargs = None
+    find_executable_batch_size = None
+    get_max_memory = None
 from huggingface_hub import HfApi
 from packaging import version
 from packaging.version import parse as vparse
@@ -113,9 +127,9 @@ class HFLM(TemplateLM):
             eval_logger.warning(
                 "`pretrained` model kwarg is not of type `str`. Many other model arguments may be ignored. Please do not launch via accelerate or use `parallelize=True` if passing an existing model this way."
             )
-            assert not parallelize, (
-                "`parallelize=True` is not compatible with passing pre-initialized model to `pretrained`"
-            )
+            assert (
+                not parallelize
+            ), "`parallelize=True` is not compatible with passing pre-initialized model to `pretrained`"
             self._model = pretrained
             self._device = self._model.device
             self._config = self._model.config
@@ -624,9 +638,9 @@ class HFLM(TemplateLM):
 
         if not autogptq and not gptqmodel:
             if model_kwargs.get("load_in_4bit"):
-                assert vparse(transformers.__version__) >= vparse("4.30.0"), (
-                    "load_in_4bit requires transformers >= 4.30.0"
-                )
+                assert vparse(transformers.__version__) >= vparse(
+                    "4.30.0"
+                ), "load_in_4bit requires transformers >= 4.30.0"
                 if compute_dtype := model_kwargs.get("bnb_4bit_compute_dtype"):
                     model_kwargs["bnb_4bit_compute_dtype"] = get_dtype(compute_dtype)
 
@@ -1015,16 +1029,16 @@ class HFLM(TemplateLM):
         inplen: int | None = None,
     ) -> torch.Tensor:
         if self.backend == "causal":
-            assert contlen and inplen, (
-                "Must pass input len and cont. len to select scored logits for causal LM"
-            )
+            assert (
+                contlen and inplen
+            ), "Must pass input len and cont. len to select scored logits for causal LM"
             # discard right-padding.
             # also discard the input/context tokens. we'll only score continuations.
             logits = logits[inplen - contlen : inplen]
         elif self.backend == "seq2seq":
-            assert contlen and not inplen, (
-                "Selecting scored logits for Seq2SeqLM requires only cont. len"
-            )
+            assert (
+                contlen and not inplen
+            ), "Selecting scored logits for Seq2SeqLM requires only cont. len"
             # only discard right-padding.
             # the logits input to this fn only contain decoder-side tokens.
             logits = logits[:contlen]
@@ -1178,9 +1192,7 @@ class HFLM(TemplateLM):
         batch_size = (
             self.batch_size
             if self.batch_size != "auto"
-            else override_bs
-            if override_bs is not None
-            else 0
+            else override_bs if override_bs is not None else 0
         )
         batch_fn = (
             self._batch_scheduler
@@ -1337,7 +1349,9 @@ class HFLM(TemplateLM):
                 ):
                     cont_toks = torch.tensor(
                         cont_toks, dtype=torch.long, device=self.device
-                    ).unsqueeze(0)  # [1, seq]
+                    ).unsqueeze(
+                        0
+                    )  # [1, seq]
                     # Use trailing slice [-cont_toks.shape[1]:] to handle variable length cont_len (but same ctx+cont[:-1]).
                     # i.e. continuations can be sliced at diff points. Collator ensures we have sufficient greedy_tokens
                     # by choosing key with longest cont if group_by="contexts".
@@ -1401,9 +1415,7 @@ class HFLM(TemplateLM):
         batch_size = (
             self.batch_size
             if self.batch_size != "auto"
-            else adaptive_batch_size
-            if adaptive_batch_size is not None
-            else 0
+            else adaptive_batch_size if adaptive_batch_size is not None else 0
         )
         batch_fn = (
             self._batch_scheduler
@@ -1446,9 +1458,9 @@ class HFLM(TemplateLM):
             if self.backend == "causal":
                 # max len for inputs = max length, minus room to generate the max new tokens
                 max_ctx_len = self.max_length - max_gen_toks
-                assert max_ctx_len > 0, (
-                    f"Invalid configuration: requested max tokens to generate ({max_gen_toks}) must be less than model's maximum sequence length ({self.max_length})."
-                )
+                assert (
+                    max_ctx_len > 0
+                ), f"Invalid configuration: requested max tokens to generate ({max_gen_toks}) must be less than model's maximum sequence length ({self.max_length})."
             elif self.backend == "seq2seq":
                 # max len for inputs = encoder's whole max_length
                 max_ctx_len = self.max_length

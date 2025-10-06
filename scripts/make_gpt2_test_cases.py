@@ -1,7 +1,12 @@
 import random
 
-import torch
-import torch.nn.functional as F
+
+try:
+    import torch
+    import torch.nn.functional as F
+except ImportError:
+    torch = None
+    F = None
 import transformers
 
 

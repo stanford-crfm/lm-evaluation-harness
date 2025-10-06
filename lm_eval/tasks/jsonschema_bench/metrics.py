@@ -74,12 +74,12 @@ def schema_conform_with_format_checker(
 
 
 def schema_compliance(references: list[str], predictions: list[str]) -> bool:
-    assert len(references) == 1, (
-        "We only have one reference for this task, which is the JSON schema."
-    )
-    assert len(predictions) == 1, (
-        "Currently, we don't support pass@k for JSON schema validation."
-    )
+    assert (
+        len(references) == 1
+    ), "We only have one reference for this task, which is the JSON schema."
+    assert (
+        len(predictions) == 1
+    ), "Currently, we don't support pass@k for JSON schema validation."
     reference = references[0]
     prediction = predictions[0]  # Since predictions is a list of lists
 
@@ -99,9 +99,9 @@ def schema_compliance(references: list[str], predictions: list[str]) -> bool:
 
 
 def json_validity(references: list[str], predictions: list[str]) -> bool:
-    assert len(predictions) == 1, (
-        "Currently, we don't support pass@k for JSON schema validation."
-    )
+    assert (
+        len(predictions) == 1
+    ), "Currently, we don't support pass@k for JSON schema validation."
     prediction = predictions[0]  # Since predictions is a list of lists
     try:
         json.loads(prediction.strip().strip("```").strip("json").strip())

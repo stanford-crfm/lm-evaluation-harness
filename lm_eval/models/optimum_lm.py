@@ -31,9 +31,7 @@ class OptimumLM(HFLM):
             assert kwargs["backend"] in [
                 "causal",
                 "seq2seq",
-            ], (
-                "Currently, only OVModelForCausalLM or OVModelForSeq2SeqLM are supported."
-            )
+            ], "Currently, only OVModelForCausalLM or OVModelForSeq2SeqLM are supported."
 
         self.openvino_device = device
 
@@ -75,9 +73,9 @@ class OptimumLM(HFLM):
         model_kwargs["ov_config"].setdefault("CACHE_DIR", "")
         if "pipeline_parallel" in model_kwargs:
             if model_kwargs["pipeline_parallel"]:
-                model_kwargs["ov_config"]["MODEL_DISTRIBUTION_POLICY"] = (
-                    "PIPELINE_PARALLEL"
-                )
+                model_kwargs["ov_config"][
+                    "MODEL_DISTRIBUTION_POLICY"
+                ] = "PIPELINE_PARALLEL"
 
         model_cls = (
             OVModelForCausalLM if self.backend == "causal" else OVModelForSeq2SeqLM

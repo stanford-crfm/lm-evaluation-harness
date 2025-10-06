@@ -1,7 +1,10 @@
 # data = load_dataset('HausaNLP/AfriSenti-Twitter', 'yor', trust_remote_code=True)
 # print(data)
 
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None
 
 
 print(torch.cuda.is_available())  # Should return True
