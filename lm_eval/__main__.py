@@ -349,7 +349,9 @@ def cli_evaluate(args: Union[argparse.Namespace, None] = None) -> None:
     metadata = (
         simple_parse_args_string(args.model_args)
         if isinstance(args.model_args, str)
-        else args.model_args if isinstance(args.model_args, dict) else {}
+        else args.model_args
+        if isinstance(args.model_args, dict)
+        else {}
     ) | (
         args.metadata
         if isinstance(args.metadata, dict)
@@ -369,9 +371,9 @@ def cli_evaluate(args: Union[argparse.Namespace, None] = None) -> None:
             "REAL METRICS SHOULD NOT BE COMPUTED USING LIMIT."
         )
     if args.samples:
-        assert (
-            args.limit is None
-        ), "If --samples is not None, then --limit must be None."
+        assert args.limit is None, (
+            "If --samples is not None, then --limit must be None."
+        )
         if (samples := Path(args.samples)).is_file():
             args.samples = json.loads(samples.read_text())
         else:

@@ -356,9 +356,9 @@ class NEURON_HF(TemplateLM):
             )
 
     def _select_cont_toks(self, logits, contlen=None, inplen=None):
-        assert (
-            contlen and inplen
-        ), "Must pass input len and cont. len to select scored logits for causal LM"
+        assert contlen and inplen, (
+            "Must pass input len and cont. len to select scored logits for causal LM"
+        )
         # discard right-padding.
         # also discard the input/context tokens. we'll only score continuations.
         logits = logits[inplen - contlen : inplen]
@@ -545,9 +545,7 @@ class NEURON_HF(TemplateLM):
                 greedy_tokens = logits.argmax(dim=-1)
                 cont_toks = torch.tensor(
                     cont_toks, dtype=torch.long, device=self.device
-                ).unsqueeze(
-                    0
-                )  # [1, seq]
+                ).unsqueeze(0)  # [1, seq]
                 max_equal = (greedy_tokens == cont_toks).all()
 
                 # Obtain log-probs at the corresponding continuation token indices

@@ -705,9 +705,9 @@ class Task(abc.ABC):
     ) -> Iterator[Tuple[int, Any]]:
         if samples:
             n = len(self.eval_docs)
-            assert all(
-                [e < n for e in samples]
-            ), f"Elements of --samples should be in the interval [0,k-1] where k is the number of total examples. In this case, k={n}."
+            assert all([e < n for e in samples]), (
+                f"Elements of --samples should be in the interval [0,k-1] where k is the number of total examples. In this case, k={n}."
+            )
             eval_logger.info(
                 f"{self.config.task}: Evaluating on {len(samples)} examples"
             )
@@ -1723,9 +1723,7 @@ class ConfigurableTask(Task):
                             predictions=[result],
                             **self._metric_fn_kwargs[metric],
                         )
-                    except (
-                        TypeError
-                    ):  # needed for now in order to use a different interface between our own metrics and HF Evaluate metrics
+                    except TypeError:  # needed for now in order to use a different interface between our own metrics and HF Evaluate metrics
                         result_score = self._metric_fn_list[metric]([gold, result])
                 if isinstance(result_score, dict):
                     # TODO: this handles the case where HF evaluate returns a dict.

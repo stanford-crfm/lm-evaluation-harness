@@ -197,8 +197,8 @@ class VLLM_VLM(VLLM):
                     if part:  # Add non-empty text parts
                         c.append({"type": "text", "text": part})
                     if (
-                        i < len(text_parts) - 1
-                    ) and i < self.max_images:  # Add image placeholder after each split except the last
+                        (i < len(text_parts) - 1) and i < self.max_images
+                    ):  # Add image placeholder after each split except the last
                         c.append({"type": "image"})
                         actual_image_count += 1
 

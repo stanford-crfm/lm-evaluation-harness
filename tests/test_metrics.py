@@ -84,9 +84,9 @@ def test_acc_mutual_info_slicing():
 
     # Both should be 1.0 since choice B (index 1) is correct and has highest probability
     assert result_dict["acc"] == 1.0, f"Expected acc=1.0, got {result_dict['acc']}"
-    assert (
-        result_dict["acc_mutual_info"] == 1.0
-    ), f"Expected acc_mutual_info=1.0, got {result_dict['acc_mutual_info']}"
+    assert result_dict["acc_mutual_info"] == 1.0, (
+        f"Expected acc_mutual_info=1.0, got {result_dict['acc_mutual_info']}"
+    )
 
 
 def test_acc_mutual_info_different_predictions():
@@ -118,9 +118,9 @@ def test_acc_mutual_info_different_predictions():
     assert result_dict["acc"] == 0.0, f"Expected acc=0.0, got {result_dict['acc']}"
 
     # Mutual info should be 1.0 (B predicted with mutual info, and B is correct)
-    assert (
-        result_dict["acc_mutual_info"] == 1.0
-    ), f"Expected acc_mutual_info=1.0, got {result_dict['acc_mutual_info']}"
+    assert result_dict["acc_mutual_info"] == 1.0, (
+        f"Expected acc_mutual_info=1.0, got {result_dict['acc_mutual_info']}"
+    )
 
 
 def test_acc_mutual_info_without_metric():

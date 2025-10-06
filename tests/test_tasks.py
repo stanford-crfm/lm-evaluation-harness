@@ -100,7 +100,9 @@ class BaseTasks:
                     (x[-1].isspace() is False if len(x) > 0 else True)
                     if target_delimiter.isspace()
                     else True
-                ), "doc_to_text ends in a whitespace and target delimiter also a whitespace"
+                ), (
+                    "doc_to_text ends in a whitespace and target delimiter also a whitespace"
+                )
         else:
             pass
 

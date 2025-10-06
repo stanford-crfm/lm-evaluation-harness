@@ -77,9 +77,9 @@ class HFMultimodalLM(HFLM):
         # modify init behavior.
         super().__init__(pretrained, **kwargs)
 
-        assert (
-            self.batch_size != "auto"
-        ), "Batch size 'auto' is not yet supported for hf-multimodal models."
+        assert self.batch_size != "auto", (
+            "Batch size 'auto' is not yet supported for hf-multimodal models."
+        )
         self.chat_applied: bool = False
         # TODO: phi-3.5 "image placeholders" are <image_1>, <image_2>, ... in order. how to handle this case
 
@@ -99,9 +99,9 @@ class HFMultimodalLM(HFLM):
                     or getattr(self.config, "image_token_index", None)
                 )
             )
-            assert (
-                self.image_token_id is not None
-            ), "Must have a non-None image_token_id to evaluate a Hugging Face AutoModelForVision2Seq model. Please pass `image_token_id` in `--model_args` if model's config does not already specify one."
+            assert self.image_token_id is not None, (
+                "Must have a non-None image_token_id to evaluate a Hugging Face AutoModelForVision2Seq model. Please pass `image_token_id` in `--model_args` if model's config does not already specify one."
+            )
             # get the string this token ID corresponds to
             self.image_token = self.tok_decode(
                 [self.image_token_id], skip_special_tokens=False
@@ -266,8 +266,8 @@ class HFMultimodalLM(HFLM):
                     if part:  # Add non-empty text parts
                         c.append({"type": "text", "text": part})
                     if (
-                        i < len(text_parts) - 1
-                    ) and i < self.max_images:  # Add image placeholder after each split except the last
+                        (i < len(text_parts) - 1) and i < self.max_images
+                    ):  # Add image placeholder after each split except the last
                         c.append({"type": "image"})
                         actual_image_count += 1
 
@@ -496,7 +496,9 @@ class HFMultimodalLM(HFLM):
         batch_size = (
             self.batch_size
             if self.batch_size != "auto"
-            else override_bs if override_bs is not None else 0
+            else override_bs
+            if override_bs is not None
+            else 0
         )
         batch_fn = (
             self._batch_scheduler
@@ -614,9 +616,7 @@ class HFMultimodalLM(HFLM):
                 ):
                     cont_toks = torch.tensor(
                         cont_toks, dtype=torch.long, device=self.device
-                    ).unsqueeze(
-                        0
-                    )  # [1, seq]
+                    ).unsqueeze(0)  # [1, seq]
                     max_equal = (greedy_tokens == cont_toks).all()
 
                     # Obtain log-probs at the corresponding continuation token indices

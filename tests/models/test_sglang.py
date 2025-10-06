@@ -101,9 +101,9 @@ class Test_SGlang:
         )
         assert simple_results is not None, "simple_evaluate returned None"
         # The accuracy for 10 data points is 0.7. Setting up a threshold of 0.5 provides a buffer to account for these fluctuations.
-        assert (
-            simple_results["results"]["arc_easy"]["acc,none"] >= 0.5
-        ), "The accuracy for simple_evaluate() is below 0.5!"
+        assert simple_results["results"]["arc_easy"]["acc,none"] >= 0.5, (
+            "The accuracy for simple_evaluate() is below 0.5!"
+        )
         task_dict = get_task_dict(["arc_easy"], task_manager)
         evaluate_results = evaluate(
             lm=self.LM,
@@ -112,9 +112,9 @@ class Test_SGlang:
         )
         assert evaluate_results is not None, "evaluate returned None"
         # The accuracy for 10 data points is 0.7. Setting up a threshold of 0.5 provides a buffer to account for these fluctuations.
-        assert (
-            evaluate_results["results"]["arc_easy"]["acc,none"] >= 0.5
-        ), "The accuracy for evaluate() is below 0.5!"
+        assert evaluate_results["results"]["arc_easy"]["acc,none"] >= 0.5, (
+            "The accuracy for evaluate() is below 0.5!"
+        )
 
         assert set(simple_results["results"].keys()) == set(
             evaluate_results["results"].keys()

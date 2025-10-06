@@ -364,9 +364,9 @@ def get_atoms_pddl(d, p, atoms):
     constants_dict = {}
     for c in constants:
         constants_dict[c.name.lower()] = c
-    assert len(objs) == len(
-        constants
-    ), f"Could not identify all objects: {objs - set(constants_dict.keys())} not found, {set(constants_dict.keys()) - objs} should not be there"
+    assert len(objs) == len(constants), (
+        f"Could not identify all objects: {objs - set(constants_dict.keys())} not found, {set(constants_dict.keys()) - objs} should not be there"
+    )
 
     state = []
     covered_preds = set()
@@ -374,16 +374,16 @@ def get_atoms_pddl(d, p, atoms):
         name = f.name.lower()
         if name in preds:
             covered_preds.add(name)
-            assert (
-                len(preds[name][0]) == f.arity
-            ), f"The arity does not match: {preds[name]} vs {f.terms}"
+            assert len(preds[name][0]) == f.arity, (
+                f"The arity does not match: {preds[name]} vs {f.terms}"
+            )
             # Going over the lists of objects, adding ground predicate for each
             for ob in preds[name]:
                 c = [constants_dict[o] for o in ob]
                 state.append(f(*c))
-    assert len(covered_preds) == len(
-        preds.keys()
-    ), f"Covered predicates: \n{sorted(list(covered_preds))} vs \n{sorted(list(preds.keys()))}"
+    assert len(covered_preds) == len(preds.keys()), (
+        f"Covered predicates: \n{sorted(list(covered_preds))} vs \n{sorted(list(preds.keys()))}"
+    )
     return set(state)
 
 
@@ -1029,9 +1029,9 @@ answer: the correct index.
 class ValidationEvaluator(BaseEvaluator):
     def get_score(self, ans, doc):
         real_answer = str(doc["answer"])
-        assert (
-            int(real_answer) >= 0
-        ), f"The index must be non-negative, received {real_answer}"
+        assert int(real_answer) >= 0, (
+            f"The index must be non-negative, received {real_answer}"
+        )
         # Exact match
         self.add_scores(
             [

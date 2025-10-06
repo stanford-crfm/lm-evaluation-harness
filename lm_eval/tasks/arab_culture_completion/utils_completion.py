@@ -56,9 +56,9 @@ def doc_to_text(doc):
 
     ## We don't have a setting for only information about the country without the region
     if COUNTRY:
-        assert (
-            REGION
-        ), "If you want to add the country information, you must also add the region information"
+        assert REGION, (
+            "If you want to add the country information, you must also add the region information"
+        )
 
     ## convert contry and region name to arabic if the language is arabic
     if ARABIC:

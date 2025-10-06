@@ -270,14 +270,18 @@ def simple_evaluate(
             use_cache
             # each rank receives a different cache db.
             # necessary to avoid multiple writes to cache at once
-            + "_rank" + str(lm.rank) + ".db",
+            + "_rank"
+            + str(lm.rank)
+            + ".db",
         )
 
     if task_manager is None:
         metadata = (
             simple_parse_args_string(model_args)
             if isinstance(model_args, str)
-            else model_args if isinstance(model_args, dict) else {}
+            else model_args
+            if isinstance(model_args, dict)
+            else {}
         ) | (metadata or {})
         task_manager = TaskManager(metadata=metadata)
 
