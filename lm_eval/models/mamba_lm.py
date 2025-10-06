@@ -1,5 +1,6 @@
 from typing import Optional, Union
 
+
 try:
     import torch
 except ImportError:

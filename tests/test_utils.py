@@ -2,6 +2,8 @@ import itertools
 
 import numpy as np
 import pytest
+
+
 try:
     import torch
 except ImportError:

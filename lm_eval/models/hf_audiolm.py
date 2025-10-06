@@ -1,6 +1,7 @@
 import copy
 from typing import Dict, List, Optional, Tuple, Union
 
+
 try:
     import torch
 except ImportError:

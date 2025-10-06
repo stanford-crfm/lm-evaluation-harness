@@ -8,6 +8,7 @@ import logging
 import os
 from typing import List
 
+
 try:
     import torch
 except ImportError:

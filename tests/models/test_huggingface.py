@@ -6,6 +6,8 @@ from pathlib import Path
 
 import numpy as np
 import tokenizers
+
+
 try:
     import torch
 except ImportError:
