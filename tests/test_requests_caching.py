@@ -5,7 +5,12 @@ from datetime import datetime
 from typing import List, Optional, Tuple
 
 import pytest
-import torch
+
+
+try:
+    import torch
+except ImportError:
+    torch = None
 
 from lm_eval.caching.cache import PATH
 

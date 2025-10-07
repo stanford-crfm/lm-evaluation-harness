@@ -2,8 +2,13 @@ import copy
 import logging
 from typing import Dict, List, Optional, Tuple, Union
 
-import torch
-import torch.nn.functional as F
+
+try:
+    import torch
+    import torch.nn.functional as F
+except ImportError:
+    torch = None
+    F = None
 import transformers
 from tqdm import tqdm
 from transformers import BatchEncoding
@@ -476,10 +481,12 @@ class HFMultimodalLM(HFLM):
         re_ord = Collator(
             requests,
             sort_fn=_collate,
-            group_by="contexts"  # TODO: can't group-by just "contexts" any more, need to incorporate imgs
-            if self.AUTO_MODEL_CLASS == transformers.AutoModelForCausalLM
-            and self.logits_cache
-            else None,
+            group_by=(
+                "contexts"  # TODO: can't group-by just "contexts" any more, need to incorporate imgs
+                if self.AUTO_MODEL_CLASS == transformers.AutoModelForCausalLM
+                and self.logits_cache
+                else None
+            ),
             group_fn=_lookup_one_token_cont,
         )
 
@@ -569,13 +576,16 @@ class HFMultimodalLM(HFLM):
             )  # [batch, padding_length (inp or cont), vocab]
 
             for (
-                request_str,
-                ctx_tokens,
-                _,
-                image_encs,
-            ), logits, inplen, cont_toks in zip(
-                chunk, multi_logits, inplens, cont_toks_list
-            ):
+                (
+                    request_str,
+                    ctx_tokens,
+                    _,
+                    image_encs,
+                ),
+                logits,
+                inplen,
+                cont_toks,
+            ) in zip(chunk, multi_logits, inplens, cont_toks_list):
                 # Slice to original seq length
                 contlen = len(cont_toks)
                 # take only logits in the continuation

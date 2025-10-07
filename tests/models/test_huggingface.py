@@ -6,7 +6,12 @@ from pathlib import Path
 
 import numpy as np
 import tokenizers
-import torch
+
+
+try:
+    import torch
+except ImportError:
+    torch = None
 from packaging.version import parse as parse_version
 
 from lm_eval import tasks

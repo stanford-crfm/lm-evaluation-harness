@@ -25,7 +25,6 @@ try:
     import torch
 except ImportError:
     torch = None
-
 import transformers
 
 
@@ -155,7 +154,7 @@ class Grouper:
 
 def pad_and_concat(
     max_length: int,
-    tensors: List["torch.Tensor"],
+    tensors: List[torch.Tensor],
     padding_side: Literal["right", "left"] = "right",
 ):
     """
@@ -206,11 +205,10 @@ def pad_and_concat(
 
 def clear_torch_cache() -> None:
     gc.collect()
-    if torch is not None:
-        torch.cuda.empty_cache()
+    torch.cuda.empty_cache()
 
 
-def get_dtype(dtype: Union[str, "torch.dtype"]) -> "torch.dtype":
+def get_dtype(dtype: Union[str, torch.dtype]) -> torch.dtype:
     """Converts `dtype` from `str` to torch.dtype when possible. Does not use an instantiated HF AutoConfig"""
     if isinstance(dtype, str) and dtype != "auto":
         # Convert `str` args torch dtype: `float16` -> `torch.float16`
@@ -454,8 +452,8 @@ class Collator:
         req_str: Tuple[str, str] = None,
         cxt_toks: List[int] = None,
         cont_toks: List[int] = None,
-        logits: "torch.Tensor" = None,
-    ) -> Iterator[Tuple[Tuple[str, str], List[int], "torch.Tensor"]]:
+        logits: torch.Tensor = None,
+    ) -> Iterator[Tuple[Tuple[str, str], List[int], torch.Tensor]]:
         """
         Retrieves cached single-token continuations and their associated arguments, updating indices as necessary.
 
@@ -583,9 +581,11 @@ class Collator:
                     hashable_dict = tuple(
                         (
                             key,
-                            tuple(value)
-                            if isinstance(value, collections.abc.Iterable)
-                            else value,
+                            (
+                                tuple(value)
+                                if isinstance(value, collections.abc.Iterable)
+                                else value
+                            ),
                         )
                         for key, value in sorted(fn(ob).items())
                     )
@@ -858,3 +858,32 @@ def truncate_tokens(
         right_length = max_length - left_length
         return tokens[:left_length] + tokens[-right_length:]
     return None
+
+
+def postprocess_generated_text(
+    generation: str, stop: Union[list[str], str, None], think_end_token: Optional[str]
+) -> str:
+    """
+    Post-processes the generated text by stripping stop sequences and optional thinking markers.
+
+    Args:
+        generation (str): The generated text to be processed.
+        stop (Optional[list[str]]): Stop sequence(s) to remove. Text is truncated
+            at the first occurrence of any stop sequence.
+        think_end_token (Optional[str]): Token marking end of thinking section. If provided,
+            returns only the text after this token (discarding thinking content).
+
+    Returns:
+        str: The processed generation - text before stop sequences and after thinking sections.
+    """
+    if stop:
+        stop = [stop] if isinstance(stop, str) else stop
+        for term in stop:
+            if len(term) > 0:
+                # ignore '' separator,
+                # for seq2seq case where self.tok_decode(self.eot_token_id) = ''
+                generation = generation.split(term)[0]
+    if think_end_token:
+        generation = generation.split(think_end_token)[-1].lstrip()
+
+    return generation

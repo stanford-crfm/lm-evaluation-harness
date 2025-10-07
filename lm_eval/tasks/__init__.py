@@ -81,7 +81,7 @@ class TaskManager:
         task_index = {}
         for task_dir in all_paths:
             tasks = self._get_task_and_group(task_dir)
-            task_index = {**tasks, **task_index}
+            task_index = {**task_index, **tasks}
 
         return task_index
 
@@ -336,9 +336,11 @@ class TaskManager:
                     if self._name_is_tag(name_or_config):
                         fn = partial(
                             self._load_individual_task_or_group,
-                            update_config=name_or_config
-                            if isinstance(name_or_config, dict)
-                            else None,
+                            update_config=(
+                                name_or_config
+                                if isinstance(name_or_config, dict)
+                                else None
+                            ),
                         )
                         return dict(
                             collections.ChainMap(*map(fn, reversed(subtask_list)))

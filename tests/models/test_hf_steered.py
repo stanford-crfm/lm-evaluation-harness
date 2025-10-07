@@ -7,7 +7,11 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-import torch
+
+try:
+    import torch
+except ImportError:
+    torch = None
 
 from lm_eval import tasks
 from lm_eval.api.instance import Instance

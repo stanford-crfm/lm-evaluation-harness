@@ -5,7 +5,12 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 import pandas as pd
-import torch
+
+
+try:
+    import torch
+except ImportError:
+    torch = None
 
 import lm_eval.evaluator
 import lm_eval.models.utils

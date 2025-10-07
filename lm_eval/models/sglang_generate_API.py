@@ -47,8 +47,10 @@ class SGLANGGENERATEAPI(LocalCompletionsAPI):
                     **gen_kwargs,
                 },
             }
-            request.update({"text": messages}) if is_string else request.update(
-                {"input_ids": messages}
+            (
+                request.update({"text": messages})
+                if is_string
+                else request.update({"input_ids": messages})
             )
             return request
         else:

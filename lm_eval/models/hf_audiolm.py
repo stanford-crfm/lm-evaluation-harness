@@ -1,7 +1,11 @@
 import copy
 from typing import Dict, List, Optional, Tuple, Union
 
-import torch
+
+try:
+    import torch
+except ImportError:
+    torch = None
 import transformers
 from tqdm import tqdm
 from transformers import BatchEncoding

@@ -161,13 +161,17 @@ if __name__ == "__main__":
 
         yaml_dict = {
             "include": base_yaml_name,
-            "group": f"tmmluplus_{args.task_prefix}_{category}"
-            if args.task_prefix != ""
-            else f"tmmluplus_{category}",
+            "group": (
+                f"tmmluplus_{args.task_prefix}_{category}"
+                if args.task_prefix != ""
+                else f"tmmluplus_{category}"
+            ),
             "group_alias": category.replace("_", " "),
-            "task": f"tmmluplus_{args.task_prefix}_{subject}"
-            if args.task_prefix != ""
-            else f"tmmluplus_{subject}",
+            "task": (
+                f"tmmluplus_{args.task_prefix}_{subject}"
+                if args.task_prefix != ""
+                else f"tmmluplus_{subject}"
+            ),
             "task_alias": subject.replace("_", " "),
             "dataset_name": subject,
             "description": description,
@@ -200,9 +204,11 @@ if __name__ == "__main__":
     with open(file_save_path, "w") as yaml_file:
         yaml.dump(
             {
-                "group": f"tmmluplus_{args.task_prefix}"
-                if args.task_prefix != ""
-                else "tmmluplus",
+                "group": (
+                    f"tmmluplus_{args.task_prefix}"
+                    if args.task_prefix != ""
+                    else "tmmluplus"
+                ),
                 "task": mmlu_subcategories,
             },
             yaml_file,

@@ -1,7 +1,12 @@
 from typing import List
 
 import pytest
-import torch
+
+
+try:
+    import torch
+except ImportError:
+    torch = None
 
 from lm_eval import evaluate, simple_evaluate, tasks
 from lm_eval.api.instance import Instance

@@ -1,4 +1,7 @@
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None
 from sklearn.metrics import f1_score, precision_score, recall_score
 
 

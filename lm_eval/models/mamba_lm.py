@@ -1,6 +1,10 @@
 from typing import Optional, Union
 
-import torch
+
+try:
+    import torch
+except ImportError:
+    torch = None
 
 import lm_eval.models.utils
 from lm_eval.api.registry import register_model
@@ -107,9 +111,11 @@ class MambaLMWrapper(HFLM):
             self._model = MambaLMHeadModel.from_pretrained(
                 pretrained,
                 device=self._device,
-                dtype=torch.float16
-                if dtype == "auto"
-                else lm_eval.models.utils.get_dtype(dtype),
+                dtype=(
+                    torch.float16
+                    if dtype == "auto"
+                    else lm_eval.models.utils.get_dtype(dtype)
+                ),
             )
 
     def _model_generate(self, context, max_length, stop, **generation_kwargs):

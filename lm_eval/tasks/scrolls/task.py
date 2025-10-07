@@ -256,15 +256,18 @@ class _SCROLLSMultipleChoiceTask(_SCROLLSTask):
             "em": acc_norm * 100.0,
         }
 
-    def construct_requests(self, doc, ctx, **kwargs):
-        apply_chat_template = kwargs.pop("apply_chat_template", False)
+    def construct_requests(
+        self, doc, ctx, chat_template=None, apply_chat_template=False, **kwargs
+    ):
         request_list = [
             Instance(
                 request_type="loglikelihood",
                 doc=doc,
-                arguments=(ctx, " {}".format(choice))
-                if not apply_chat_template
-                else (ctx, "{}".format(choice)),
+                arguments=(
+                    (ctx, " {}".format(choice))
+                    if not apply_chat_template
+                    else (ctx, "{}".format(choice))
+                ),
                 idx=i,
                 **kwargs,
             )
@@ -291,8 +294,9 @@ class _SCROLLSSummaryTask(_SCROLLSTask):
             "rougeL": (results[0], doc["outputs"]),
         }
 
-    def construct_requests(self, doc, ctx, **kwargs):
-        kwargs.pop("apply_chat_template", False)
+    def construct_requests(
+        self, doc, ctx, chat_template=None, apply_chat_template=False, **kwargs
+    ):
         return Instance(
             request_type="generate_until",
             doc=doc,
@@ -334,16 +338,17 @@ class Qasper(_SCROLLSTask):
             prediction = results[0]
         return {"f1": (prediction, doc["outputs"])}
 
-    def construct_requests(self, doc, ctx, **kwargs):
-        apply_chat_template = kwargs.pop("apply_chat_template", False)
+    def construct_requests(
+        self, doc, ctx, chat_template=None, apply_chat_template=False, **kwargs
+    ):
         if doc["is_yes_no"]:
             return [
                 Instance(
                     request_type="loglikelihood",
                     doc=doc,
-                    arguments=(ctx, " yes")
-                    if not apply_chat_template
-                    else (ctx, "yes"),
+                    arguments=(
+                        (ctx, " yes") if not apply_chat_template else (ctx, "yes")
+                    ),
                     idx=0,
                     **kwargs,
                 ),
@@ -416,8 +421,9 @@ class NarrativeQA(_SCROLLSTask):
     def process_results(self, doc, results):
         return {"f1": (results[0], doc["outputs"])}
 
-    def construct_requests(self, doc, ctx, **kwargs):
-        kwargs.pop("apply_chat_template", False)
+    def construct_requests(
+        self, doc, ctx, chat_template=None, apply_chat_template=False, **kwargs
+    ):
         return Instance(
             request_type="generate_until",
             doc=doc,

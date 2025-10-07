@@ -239,16 +239,6 @@ def process_results_generate_until(doc, results):
     return _process_results(doc, answer)
 
 
-def logsumexp_np(x, axis=None, keepdims=False):
-    x = np.array(x)
-    x_max = np.max(x, axis=axis, keepdims=True)
-    sum_exp = np.sum(np.exp(x - x_max), axis=axis, keepdims=keepdims)
-    out = np.log(sum_exp)
-    if not keepdims:
-        x_max = np.squeeze(x_max, axis=axis)
-    return out + x_max
-
-
 def process_results_multiple_choice(doc, results):
     """
     Extracts LM answer as the choice with the highest likelihood.
@@ -258,28 +248,8 @@ def process_results_multiple_choice(doc, results):
 
     answer = np.argmax(lls)
 
-    biased_lls = []
-    unbiased_lls = []
-    for i, ll in enumerate(lls):
-        if i in doc_to_biased_answer(doc):
-            biased_lls.append(ll)
-        else:
-            unbiased_lls.append(ll)
-
-    if len(biased_lls) != 0:
-        lse_biased = logsumexp_np(biased_lls)
-        lse_unbiased = logsumexp_np(unbiased_lls)
-        difference = lse_unbiased - lse_biased
-        ratio = difference / abs(lse_biased)
-    else:
-        ratio = 0
-        difference = 0
     # Further process results with extracted answer
-    return {
-        **_process_results(doc, answer),
-        "likelihood_diff": difference,
-        "likelihood_ratio": ratio,
-    }
+    return _process_results(doc, answer)
 
 
 def doc_to_biased_answer(doc):

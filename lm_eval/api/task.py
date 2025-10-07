@@ -1,7 +1,6 @@
 import abc
 import ast
 import logging
-import math
 import random
 import re
 from collections.abc import Callable
@@ -459,9 +458,9 @@ class Task(abc.ABC):
             # sample fewshot context #TODO: need to offset doc_id by rank now!
             fewshot_ctx = self.fewshot_context(
                 doc,
-                num_fewshot=0
-                if self.config.num_fewshot is None
-                else self.config.num_fewshot,
+                num_fewshot=(
+                    0 if self.config.num_fewshot is None else self.config.num_fewshot
+                ),
                 system_instruction=system_instruction,
                 apply_chat_template=apply_chat_template,
                 fewshot_as_multiturn=fewshot_as_multiturn,
@@ -982,6 +981,10 @@ class ConfigurableTask(Task):
     def download(
         self, dataset_kwargs: Optional[Dict[str, Any]] = None, **kwargs
     ) -> None:
+        from packaging.version import parse as vparse
+
+        if dataset_kwargs and vparse(datasets.__version__) >= vparse("4.0.0"):
+            dataset_kwargs.pop("trust_remote_code", None)
         if isinstance(self.config.custom_dataset, Callable):
             eval_logger.warning(
                 f"{self.config.task}: Custom kwargs can be passed to `--metadata` in console (as json string) or to the TaskManager."
@@ -1540,8 +1543,6 @@ class ConfigurableTask(Task):
         )
 
     def process_results(self, doc, results):
-        NAT_TO_BIT = 1 / math.log(2)
-
         if callable(self.config.process_results):
             return self.config.process_results(doc, results)
 
@@ -1550,13 +1551,9 @@ class ConfigurableTask(Task):
         if self.OUTPUT_TYPE == "loglikelihood":
             results = results[0]
             ll, is_greedy = results
-            _bytes = self.count_bytes(self.doc_to_target(doc))
-            bpb = -ll / (_bytes * np.log(2))
             return {
                 **({"perplexity": ll} if "perplexity" in use_metric else {}),
                 **({"acc": int(is_greedy)} if "acc" in use_metric else {}),
-                **({"nll": -ll} if "nll" in use_metric else {}),
-                **({"bpb": bpb} if "bpb" in use_metric else {}),
             }
         elif self.OUTPUT_TYPE == "loglikelihood_rolling":
             (loglikelihood,) = results
@@ -1578,7 +1575,6 @@ class ConfigurableTask(Task):
                     if "bits_per_byte" in use_metric
                     else {}
                 ),
-                **({"nll": -loglikelihood} if "nll" in use_metric else {}),
             }
         elif self.OUTPUT_TYPE == "multiple_choice":
             lls, is_greedy = zip(*results)
@@ -1638,19 +1634,6 @@ class ConfigurableTask(Task):
                 # TODO: this gets score of 0 on arc_challenge for pythia-70m. need to test that this works properly
                 exact_match = int(is_greedy[gold]) if gold != -100 else 0
 
-            # identify a valid primary_gold if multiple targets
-            if isinstance(gold, list):
-                valid_golds = [g for g in gold if g != -100 and g < len(choices)]
-                primary_gold = valid_golds[0] if valid_golds else None
-            else:
-                primary_gold = gold if (gold != -100 and gold < len(choices)) else None
-
-            result_dict = {
-                **({"acc": acc} if "acc" in use_metric else {}),
-                **({"acc_norm": acc_norm} if "acc_norm" in use_metric else {}),
-                **({"exact_match": exact_match} if "exact_match" in use_metric else {}),
-            }
-
             prob_norm = utils.softmax(lls)
 
             # TODO use keyword arguments to the metric?
@@ -1674,53 +1657,6 @@ class ConfigurableTask(Task):
                 ]
                 acc_mutual_info = 1.0 if np.argmax(lls_mutual_info) == gold else 0.0
                 result_dict["acc_mutual_info"] = acc_mutual_info
-
-            # Compute additional metrics only if primary_gold is valid
-            if primary_gold is not None:
-                byte_lengths = np.array(
-                    [max(1, len(choice.encode("utf-8"))) for choice in choices]
-                )
-                log_probs = np.array(lls)
-                normalized_log_probs = log_probs - np.logaddexp.reduce(log_probs)
-                correct_logprob = log_probs[primary_gold]
-                correct_bpb = (
-                    -correct_logprob / byte_lengths[primary_gold]
-                ) * NAT_TO_BIT
-                correct_choice_logprob = normalized_log_probs[primary_gold]
-
-                bpb_values = (-log_probs / byte_lengths) * NAT_TO_BIT
-                bpb_weights = np.exp(-bpb_values)
-                bpb_weights /= max(bpb_weights.sum(), 1e-8)  # avoid division by zero
-                correct_choice_prob_norm = float(bpb_weights[primary_gold])
-                correct_choice_logprob_norm = float(
-                    np.log(correct_choice_prob_norm + 1e-30)
-                )
-
-                result_dict.update(
-                    {
-                        **({"bpb": correct_bpb} if "bpb" in use_metric else {}),
-                        **(
-                            {"logprob": float(correct_logprob)}
-                            if "logprob" in use_metric
-                            else {}
-                        ),
-                        **(
-                            {"choice_logprob": float(correct_choice_logprob)}
-                            if "choice_logprob" in use_metric
-                            else {}
-                        ),
-                        **(
-                            {"choice_prob_norm": correct_choice_prob_norm}
-                            if "choice_prob_norm" in use_metric
-                            else {}
-                        ),
-                        **(
-                            {"choice_logprob_norm": correct_choice_logprob_norm}
-                            if "choice_logprob_norm" in use_metric
-                            else {}
-                        ),
-                    }
-                )
 
         elif self.OUTPUT_TYPE == "generate_until":
             gold = self.doc_to_target(doc)
