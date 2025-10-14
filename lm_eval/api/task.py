@@ -1637,6 +1637,13 @@ class ConfigurableTask(Task):
                 # TODO: this gets score of 0 on arc_challenge for pythia-70m. need to test that this works properly
                 exact_match = int(is_greedy[gold]) if gold != -100 else 0
 
+            # identify a valid primary_gold if multiple targets
+            if isinstance(gold, list):
+                valid_golds = [g for g in gold if g != -100 and g < len(choices)]
+                primary_gold = valid_golds[0] if valid_golds else None
+            else:
+                primary_gold = gold if (gold != -100 and gold < len(choices)) else None
+
             prob_norm = utils.softmax(lls)
 
             # TODO use keyword arguments to the metric?
