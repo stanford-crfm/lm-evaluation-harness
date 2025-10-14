@@ -1,6 +1,7 @@
 import abc
 import ast
 import logging
+import math
 import random
 import re
 from collections.abc import Callable
@@ -21,7 +22,6 @@ from typing import (
 )
 
 import datasets
-import math
 import numpy as np
 from tqdm import tqdm
 
