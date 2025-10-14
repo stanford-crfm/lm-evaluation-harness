@@ -1,6 +1,7 @@
 import abc
 import ast
 import logging
+import math
 import random
 import re
 from collections.abc import Callable
@@ -1543,6 +1544,8 @@ class ConfigurableTask(Task):
         )
 
     def process_results(self, doc, results):
+        NAT_TO_BIT = 1 / math.log(2)
+
         if callable(self.config.process_results):
             return self.config.process_results(doc, results)
 
@@ -1634,6 +1637,13 @@ class ConfigurableTask(Task):
                 # TODO: this gets score of 0 on arc_challenge for pythia-70m. need to test that this works properly
                 exact_match = int(is_greedy[gold]) if gold != -100 else 0
 
+            # identify a valid primary_gold if multiple targets
+            if isinstance(gold, list):
+                valid_golds = [g for g in gold if g != -100 and g < len(choices)]
+                primary_gold = valid_golds[0] if valid_golds else None
+            else:
+                primary_gold = gold if (gold != -100 and gold < len(choices)) else None
+
             prob_norm = utils.softmax(lls)
 
             # TODO use keyword arguments to the metric?
@@ -1657,6 +1667,57 @@ class ConfigurableTask(Task):
                 ]
                 acc_mutual_info = 1.0 if np.argmax(lls_mutual_info) == gold else 0.0
                 result_dict["acc_mutual_info"] = acc_mutual_info
+                if primary_gold is not None:
+                    result_dict["logprob_mutual_info"] = lls_mutual_info[primary_gold]
+                    result_dict["choice_logprob_mutual_info"] = lls_mutual_info[
+                        primary_gold
+                    ] - np.logaddexp.reduce(lls_mutual_info)
+                    # Compute additional metrics only if primary_gold is valid
+            if primary_gold is not None:
+                byte_lengths = np.array(
+                    [max(1, len(choice.encode("utf-8"))) for choice in choices]
+                )
+                log_probs = np.array(lls)
+                normalized_log_probs = log_probs - np.logaddexp.reduce(log_probs)
+                correct_logprob = log_probs[primary_gold]
+                correct_bpb = (
+                    -correct_logprob / byte_lengths[primary_gold]
+                ) * NAT_TO_BIT
+                correct_choice_logprob = normalized_log_probs[primary_gold]
+
+                bpb_values = (-log_probs / byte_lengths) * NAT_TO_BIT
+                bpb_weights = np.exp(-bpb_values)
+                bpb_weights /= max(bpb_weights.sum(), 1e-8)  # avoid division by zero
+                correct_choice_prob_norm = float(bpb_weights[primary_gold])
+                correct_choice_logprob_norm = float(
+                    np.log(correct_choice_prob_norm + 1e-30)
+                )
+
+                result_dict.update(
+                    {
+                        **({"bpb": correct_bpb} if "bpb" in use_metric else {}),
+                        **(
+                            {"logprob": float(correct_logprob)}
+                            if "logprob" in use_metric
+                            else {}
+                        ),
+                        **(
+                            {"choice_logprob": float(correct_choice_logprob)}
+                            if "choice_logprob" in use_metric
+                            else {}
+                        ),
+                        **(
+                            {"choice_prob_norm": correct_choice_prob_norm}
+                            if "choice_prob_norm" in use_metric
+                            else {}
+                        ),
+                        **(
+                            {"choice_logprob_norm": correct_choice_logprob_norm}
+                            if "choice_logprob_norm" in use_metric
+                            else {}
+                        ),
+                    }
+                )
 
         elif self.OUTPUT_TYPE == "generate_until":
             gold = self.doc_to_target(doc)
