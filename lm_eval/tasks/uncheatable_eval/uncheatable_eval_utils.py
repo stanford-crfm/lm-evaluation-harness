@@ -50,7 +50,10 @@ DEFAULT_CACHE_DIR = Path(
     )
 )
 
-GITHUB_REQUEST_TIMEOUT = int(os.getenv("UNCHEATABLE_EVAL_REQUEST_TIMEOUT", "120"))
+try:
+    GITHUB_REQUEST_TIMEOUT = int(os.getenv("UNCHEATABLE_EVAL_REQUEST_TIMEOUT", "120"))
+except (ValueError, TypeError):
+    GITHUB_REQUEST_TIMEOUT = 120
 
 
 def _resolve_data_root(data_root: Optional[str] = None) -> Path:
