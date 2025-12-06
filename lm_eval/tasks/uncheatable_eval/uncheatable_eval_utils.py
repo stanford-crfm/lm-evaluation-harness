@@ -295,21 +295,16 @@ def _validate_download_url(url: str) -> None:
         raise ValueError(f"Download URL must use HTTPS, got {parsed.scheme}: {url}")
 
     # Ensure the URL points to a trusted GitHub domain
-    trusted_domains = {
-        "github.com",
-        "githubusercontent.com",
-        "raw.githubusercontent.com",
-    }
+    trusted_domains = {"github.com", "githubusercontent.com"}
     hostname = parsed.hostname
     if hostname is None:
         raise ValueError(f"Download URL has no hostname: {url}")
 
     # Check if hostname is a trusted domain or subdomain of a trusted domain
-    is_trusted = False
-    for domain in trusted_domains:
-        if hostname == domain or hostname.endswith(f".{domain}"):
-            is_trusted = True
-            break
+    is_trusted = any(
+        hostname == domain or hostname.endswith(f".{domain}")
+        for domain in trusted_domains
+    )
 
     if not is_trusted:
         raise ValueError(
