@@ -225,7 +225,7 @@ def _iter_jsonl(
                 raise json.JSONDecodeError(
                     f"Error decoding JSON in file {file_path} at line {lineno}: {e.msg}",
                     e.doc,
-                    e.pos
+                    e.pos,
                 ) from e
             yield _normalize_record(raw, file_path)
 
