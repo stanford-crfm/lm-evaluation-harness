@@ -6,6 +6,7 @@ import re
 from itertools import chain
 from pathlib import Path
 from typing import Any, Iterable, Iterator, List, Optional
+from urllib.parse import urlparse
 
 import datasets
 import requests
@@ -274,6 +275,49 @@ def _join_list_field(value: Any) -> Optional[str]:
     return None
 
 
+def _validate_download_url(url: str) -> None:
+    """
+    Validate that a download URL is safe to use.
+
+    Ensures the URL uses HTTPS and points to a trusted GitHub domain
+    to prevent SSRF attacks.
+
+    Args:
+        url: The URL to validate
+
+    Raises:
+        ValueError: If the URL is not safe to use
+    """
+    parsed = urlparse(url)
+
+    # Ensure HTTPS is used
+    if parsed.scheme != "https":
+        raise ValueError(f"Download URL must use HTTPS, got {parsed.scheme}: {url}")
+
+    # Ensure the URL points to a trusted GitHub domain
+    trusted_domains = {
+        "github.com",
+        "githubusercontent.com",
+        "raw.githubusercontent.com",
+    }
+    hostname = parsed.hostname
+    if hostname is None:
+        raise ValueError(f"Download URL has no hostname: {url}")
+
+    # Check if hostname is a trusted domain or subdomain of a trusted domain
+    is_trusted = False
+    for domain in trusted_domains:
+        if hostname == domain or hostname.endswith(f".{domain}"):
+            is_trusted = True
+            break
+
+    if not is_trusted:
+        raise ValueError(
+            f"Download URL must point to a trusted GitHub domain "
+            f"(github.com or githubusercontent.com), got {hostname}: {url}"
+        )
+
+
 def _download_latest_dataset(dataset: str, root: Path) -> List[Path]:
     owner = os.getenv("UNCHEATABLE_EVAL_REPO_OWNER", "Jellyfish042")
     repo = os.getenv("UNCHEATABLE_EVAL_REPO_NAME", "uncheatable_eval")
@@ -306,6 +350,9 @@ def _download_latest_dataset(dataset: str, root: Path) -> List[Path]:
         raise ValueError(
             f"Entry for {candidate.get('name')} is missing a download_url field."
         )
+
+    # Validate the download URL to prevent SSRF attacks
+    _validate_download_url(download_url)
 
     root.mkdir(parents=True, exist_ok=True)
     target_path = root / candidate["name"]
