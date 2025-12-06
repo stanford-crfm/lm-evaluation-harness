@@ -36,6 +36,12 @@ LIST_FIELD_CANDIDATES: tuple[str, ...] = (
     "messages",
 )
 
+# Matches filenames like 'wikipedia_english_20240501to20240531.jsonl.gz'
+#   - <prefix>_<start>to<end><suffix>
+#   - <prefix>: any string (e.g., 'wikipedia_english')
+#   - <start>: 8-digit date (e.g., 20240501)
+#   - <end>: 8-digit date (e.g., 20240531)
+#   - <suffix>: any file extension(s) (e.g., '.jsonl.gz')
 FILENAME_PATTERN = re.compile(
     r"^(?P<prefix>.+)_(?P<start>\d{8})to(?P<end>\d{8})(?P<suffix>(?:\.[^.]+)*)$"
 )
