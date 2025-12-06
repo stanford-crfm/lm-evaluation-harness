@@ -205,11 +205,18 @@ def _iter_jsonl(
 ) -> Iterator[dict[str, str]]:
     opener = gzip.open if compression == "gzip" else open
     with opener(file_path, "rt", encoding="utf-8") as handle:
-        for line in handle:
+        for lineno, line in enumerate(handle, 1):
             line = line.strip()
             if not line:
                 continue
-            raw = json.loads(line)
+            try:
+                raw = json.loads(line)
+            except json.JSONDecodeError as e:
+                raise json.JSONDecodeError(
+                    f"Error decoding JSON in file {file_path} at line {lineno}: {e.msg}",
+                    e.doc,
+                    e.pos
+                ) from e
             yield _normalize_record(raw, file_path)
 
 
