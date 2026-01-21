@@ -1,0 +1,9 @@
+include: _default_template.yaml
+task: multipl_e_humaneval_php
+dataset_name: humaneval-php
+generation_kwargs:
+  until:
+    - "\nfunction"
+    - "\n?>"
+    - "\n//"
+    - "\n#"

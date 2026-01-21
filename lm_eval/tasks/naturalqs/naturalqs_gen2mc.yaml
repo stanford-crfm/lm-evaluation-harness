@@ -1,0 +1,19 @@
+tag:
+  - qa
+  - multiple_choice
+task: naturalqs_gen2mc
+dataset_path: allenai/nq-gen2mc
+output_type: multiple_choice
+validation_split: validation
+doc_to_text: "Question: {{question}}\nAnswer:"
+doc_to_target: "{{['A', 'B', 'C', 'D', 'E'].index(answerKey)}}"
+doc_to_choice: "{{choices.text}}"
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+  - metric: acc_norm
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 1.0

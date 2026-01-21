@@ -1,0 +1,8 @@
+include: _default_template.yaml
+task: multipl_e_humaneval_java
+dataset_name: humaneval-java
+generation_kwargs:
+  until:
+    - "\n }\n"
+    - "}\n}"
+    - "}\n\n"

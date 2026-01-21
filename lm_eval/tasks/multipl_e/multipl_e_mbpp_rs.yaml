@@ -1,0 +1,7 @@
+include: _default_template.yaml
+task: multipl_e_mbpp_rs
+dataset_name: mbpp-rs
+repeats: 1
+generation_kwargs:
+  until:
+    - "\n}"

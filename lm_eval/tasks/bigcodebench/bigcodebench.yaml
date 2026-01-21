@@ -1,0 +1,39 @@
+tag:
+  - code_generation
+task: bigcodebench
+dataset_path: bigcode/bigcodebench
+unsafe_code: true
+output_type: generate_until
+test_split: v0.1.2
+doc_to_text: !function utils.doc_to_text
+doc_to_target: "{{canonical_solution}}"
+metric_list:
+  - metric: !function utils.pass_at_k
+    aggregation: mean
+    higher_is_better: true
+    k: [1]
+generation_kwargs:
+  until:
+    - "<|endoftext|>"
+    - "<|endofmask|>"
+    - "</s>"
+    - "\nif __name__"
+    - "\ndef main("
+    - "\nprint("
+    - "\ndef "
+    - "\nclass "
+    - "\nimport "
+    - "\nfrom "
+    - "\nassert "
+  max_gen_toks: 1280
+  do_sample: false
+  temperature: 0.0
+repeats: 1
+num_fewshot: 0
+filter_list:
+  - name: "create_test"
+    filter:
+      - function: "custom"
+        filter_fn: !function utils.build_predictions
+metadata:
+  version: 1.0

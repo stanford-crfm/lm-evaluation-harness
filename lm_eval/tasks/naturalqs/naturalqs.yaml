@@ -1,0 +1,29 @@
+tag:
+  - qa
+task: naturalqs
+dataset_path: google-research-datasets/nq_open
+output_type: generate_until
+validation_split: validation
+doc_to_text: "Question: {{question}}\nAnswer:"
+doc_to_target: " {{answer | join(', ')}}"
+metric_list:
+  - metric: exact_match
+    aggregation: mean
+    higher_is_better: true
+    ignore_case: true
+    ignore_punctuation: true
+  - metric: !function utils.f1_score
+    aggregation: mean
+    higher_is_better: true
+generation_kwargs:
+  until:
+    - "Question:"
+    - "Q:"
+    - "\n\n"
+  max_gen_toks: 50
+  do_sample: false
+  temperature: 0.0
+repeats: 1
+num_fewshot: 0
+metadata:
+  version: 1.0

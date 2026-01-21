@@ -1,0 +1,6 @@
+include: _default_template.yaml
+task: multipl_e_humaneval_cpp
+dataset_name: humaneval-cpp
+generation_kwargs:
+  until:
+    - "\n}"

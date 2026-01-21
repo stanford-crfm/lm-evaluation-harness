@@ -1,0 +1,3 @@
+include: _default_template.yaml
+task: deepmind_math_algebra_linear_2d
+process_docs: !function utils.filter_algebra_linear_2d

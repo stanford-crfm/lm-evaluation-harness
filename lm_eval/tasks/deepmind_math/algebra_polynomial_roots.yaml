@@ -1,0 +1,3 @@
+include: _default_template.yaml
+task: deepmind_math_algebra_polynomial_roots
+process_docs: !function utils.filter_algebra_polynomial_roots

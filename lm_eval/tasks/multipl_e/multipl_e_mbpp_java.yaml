@@ -1,0 +1,9 @@
+include: _default_template.yaml
+task: multipl_e_mbpp_java
+dataset_name: mbpp-java
+repeats: 1
+generation_kwargs:
+  until:
+    - "\n }\n"
+    - "}\n}"
+    - "}\n\n"

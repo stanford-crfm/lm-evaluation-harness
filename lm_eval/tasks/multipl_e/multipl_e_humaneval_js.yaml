@@ -1,0 +1,9 @@
+include: _default_template.yaml
+task: multipl_e_humaneval_js
+dataset_name: humaneval-js
+generation_kwargs:
+  until:
+    - "\nfunction "
+    - "\n/*"
+    - "\n//"
+    - "\nconsole.log"

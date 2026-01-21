@@ -1,0 +1,3 @@
+include: _default_template.yaml
+task: deepmind_math_arithmetic_div
+process_docs: !function utils.filter_arithmetic_div

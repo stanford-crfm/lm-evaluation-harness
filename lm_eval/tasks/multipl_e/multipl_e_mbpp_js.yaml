@@ -1,0 +1,10 @@
+include: _default_template.yaml
+task: multipl_e_mbpp_js
+dataset_name: mbpp-js
+repeats: 1
+generation_kwargs:
+  until:
+    - "\nfunction "
+    - "\n/*"
+    - "\n//"
+    - "\nconsole.log"
