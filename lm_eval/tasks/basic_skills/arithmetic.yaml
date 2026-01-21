@@ -1,0 +1,3 @@
+include: _default_template.yaml
+task: basic_skills_arithmetic
+dataset_name: arithmetic

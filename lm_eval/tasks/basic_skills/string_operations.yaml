@@ -1,0 +1,3 @@
+include: _default_template.yaml
+task: basic_skills_string_operations
+dataset_name: string_operations

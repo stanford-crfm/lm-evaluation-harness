@@ -1,0 +1,3 @@
+include: _default_template.yaml
+task: basic_skills_logical_reasoning
+dataset_name: logical_reasoning

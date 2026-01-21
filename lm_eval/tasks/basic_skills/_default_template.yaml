@@ -1,9 +1,7 @@
 tag:
-  - arithmetic
+  - basic_skills
   - multiple_choice
-task: basic_skills
 dataset_path: allenai/basic-skills
-dataset_name: arithmetic
 output_type: multiple_choice
 validation_split: validation
 doc_to_text: "{{question}}"
