@@ -17,6 +17,7 @@ def doc_to_text_mc(doc):
 
 def normalize_answer(s):
     """Normalize answer for comparison."""
+
     def remove_articles(text):
         return re.sub(r"\b(a|an|the)\b", " ", text)
 
@@ -36,7 +37,7 @@ def normalize_answer(s):
 def f1_score(predictions: list[str], references: list[str]) -> float:
     """Compute F1 score between prediction and reference."""
     scores = []
-    for pred, ref in zip(predictions, references):
+    for pred, ref in zip(predictions, references, strict=True):
         pred_tokens = normalize_answer(pred).split()
         ref_tokens = normalize_answer(ref).split()
 

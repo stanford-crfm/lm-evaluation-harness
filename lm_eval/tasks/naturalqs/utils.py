@@ -5,6 +5,7 @@ from collections import Counter
 
 def normalize_answer(s):
     """Normalize answer for comparison (SQuAD-style)."""
+
     def remove_articles(text):
         return re.sub(r"\b(a|an|the)\b", " ", text)
 
@@ -24,7 +25,7 @@ def normalize_answer(s):
 def f1_score(predictions: list[str], references: list[str]) -> float:
     """Compute F1 score between prediction and reference."""
     scores = []
-    for pred, ref in zip(predictions, references):
+    for pred, ref in zip(predictions, references, strict=False):
         # Handle list of references (multiple correct answers)
         if isinstance(ref, list):
             # Compute F1 against all references and take max

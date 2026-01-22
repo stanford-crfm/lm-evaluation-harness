@@ -1,15 +1,4 @@
-import re
-
 import evaluate as hf_evaluate
-
-
-try:
-    compute_ = hf_evaluate.load("code_eval")
-    test_cases = ["assert add(2, 3)==5"]
-    candidates = [["def add(a,b): return a*b"]]
-    results = compute_.compute(references=test_cases, predictions=candidates, k=[1])
-except Exception as e:
-    raise e
 
 
 def doc_to_text(doc):
@@ -33,17 +22,17 @@ def doc_to_text(doc):
             if i > 0 and lines[i - 1].strip() == "```":
                 lines.pop(i - 1)
     prompt = "\n".join(lines)
-    prompt = prompt.rstrip("\n") + "\n"  # only one trailing newline
+    prompt = prompt.rstrip()  # remove trailing whitespace
     return prompt
 
 
 def pass_at_k(references: list[str], predictions: list[list[str]], k: list[int] = None):
     """Compute pass@k metric."""
-    global compute_
     assert k is not None
     if isinstance(k, int):
         k = [k]
-    res = compute_.compute(
+    compute = hf_evaluate.load("code_eval")
+    res = compute.compute(
         references=references,
         predictions=predictions,
         k=k,
@@ -54,7 +43,7 @@ def pass_at_k(references: list[str], predictions: list[list[str]], k: list[int] 
 def build_predictions(resps: list[list[str]], docs: list[dict]) -> list[list[str]]:
     """Build predictions for DS-1000 code execution."""
     result = []
-    for resp, doc in zip(resps, docs):
+    for resp, doc in zip(resps, docs, strict=True):
         preds = []
         for continuation in resp:
             code_context = doc["code_context"]

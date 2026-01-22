@@ -1,3 +1,3 @@
-include: _default_template.yaml
+include: _default_template_yaml
 task: deepmind_math_calculus_differentiate
 process_docs: !function utils.filter_calculus_differentiate

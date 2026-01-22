@@ -7,6 +7,7 @@ output_type: generate_until
 test_split: test
 doc_to_text: "{{prompt}}"
 doc_to_target: " "
+target_delimiter: ""
 metric_list:
   - metric: !function utils.pass_at_k
     aggregation: mean

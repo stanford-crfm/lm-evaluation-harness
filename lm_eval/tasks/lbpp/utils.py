@@ -2,28 +2,18 @@ import base64
 import json
 import pickle
 import zlib
-from typing import Union
 
 import evaluate as hf_evaluate
 
 
-try:
-    pass_at_k_metric = hf_evaluate.load("code_eval")
-    test_cases = ["assert add(2, 3)==5"]
-    candidates = [["def add(a,b): return a*b"]]
-    results = pass_at_k_metric.compute(references=test_cases, predictions=candidates, k=[1])
-except Exception as e:
-    raise e
-
-
-def decode_str(str_to_decode: str) -> Union[str, list, dict]:
+def decode_str(str_to_decode: str) -> str | list | dict:
     """Decode the encoded LBPP strings."""
     return json.loads(
         pickle.loads(zlib.decompress(base64.b64decode(str_to_decode.encode("utf-8"))))
     )
 
 
-def safe_decode(value: str, field_name: str) -> Union[str, list]:
+def safe_decode(value: str, field_name: str) -> str | list:
     """Safely decode LBPP encoded fields."""
     try:
         if (
@@ -37,15 +27,14 @@ def safe_decode(value: str, field_name: str) -> Union[str, list]:
     return value
 
 
-def pass_at_1(
-    references: Union[str, list[str]], predictions: Union[str, list[list[str]]]
-) -> float:
+def pass_at_1(references: str | list[str], predictions: str | list[list[str]]) -> float:
     """Compute pass@1 metric."""
     if isinstance(references, str):
         references = [references]
     if isinstance(predictions[0], str):
         predictions = [[p] for p in predictions]
-    return pass_at_k_metric.compute(
+    compute = hf_evaluate.load("code_eval")
+    return compute.compute(
         references=references,
         predictions=predictions,
         k=[1],
@@ -55,7 +44,7 @@ def pass_at_1(
 def build_predictions(resps: list[list[str]], docs: list[dict]) -> list[list[str]]:
     """Build predictions for LBPP code execution."""
     result = []
-    for resp, doc in zip(resps, docs):
+    for resp, doc in zip(resps, docs, strict=True):
         preds = []
 
         # Decode test_list if needed
@@ -64,7 +53,9 @@ def build_predictions(resps: list[list[str]], docs: list[dict]) -> list[list[str
 
         for completion in resp:
             # Build the test program
-            unittests = "\n".join(test_list) if isinstance(test_list, list) else str(test_list)
+            unittests = (
+                "\n".join(test_list) if isinstance(test_list, list) else str(test_list)
+            )
 
             # Add test_setup if it exists
             if test_setup:

@@ -1,4 +1,4 @@
-include: _default_template.yaml
+include: _default_template_yaml
 task: multipl_e_mbpp_cpp
 dataset_name: mbpp-cpp
 repeats: 1

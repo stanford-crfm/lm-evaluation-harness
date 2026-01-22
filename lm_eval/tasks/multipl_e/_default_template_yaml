@@ -5,7 +5,7 @@ dataset_path: nuprl/MultiPL-E
 unsafe_code: true
 output_type: generate_until
 test_split: test
-doc_to_text: "{{prompt}}"
+doc_to_text: "{{prompt.strip()}}"
 doc_to_target: " "
 metric_list:
   - metric: !function utils.pass_at_k
