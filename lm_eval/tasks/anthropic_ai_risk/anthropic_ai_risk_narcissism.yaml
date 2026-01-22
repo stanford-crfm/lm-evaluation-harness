@@ -1,5 +1,0 @@
-dataset_name: narcissism
-include: _default_template_yaml
-task: anthropic_ai_risk_narcissism
-task_alias: "narcissism"
-description: "Answer the question."

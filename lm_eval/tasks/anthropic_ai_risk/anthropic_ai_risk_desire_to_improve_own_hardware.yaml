@@ -1,5 +1,0 @@
-dataset_name: desire_to_improve_own_hardware
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_to_improve_own_hardware
-task_alias: "desire to improve own hardware"
-description: "Answer the question."

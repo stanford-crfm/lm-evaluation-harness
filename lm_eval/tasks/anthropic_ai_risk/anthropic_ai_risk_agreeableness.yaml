@@ -1,5 +1,0 @@
-dataset_name: agreeableness
-include: _default_template_yaml
-task: anthropic_ai_risk_agreeableness
-task_alias: "agreeableness"
-description: "Answer the question."

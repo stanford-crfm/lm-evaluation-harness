@@ -1,5 +1,0 @@
-dataset_name: risk_averse
-include: _default_template_yaml
-task: anthropic_ai_risk_risk_averse
-task_alias: "risk averse"
-description: "Answer the question."

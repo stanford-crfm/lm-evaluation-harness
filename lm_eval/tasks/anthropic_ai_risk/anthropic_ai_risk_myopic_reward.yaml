@@ -1,5 +1,0 @@
-dataset_name: myopic_reward
-include: _default_template_yaml
-task: anthropic_ai_risk_myopic_reward
-task_alias: "myopic reward"
-description: "Answer the question."

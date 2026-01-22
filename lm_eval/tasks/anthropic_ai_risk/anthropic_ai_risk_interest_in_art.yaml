@@ -1,5 +1,0 @@
-dataset_name: interest_in_art
-include: _default_template_yaml
-task: anthropic_ai_risk_interest_in_art
-task_alias: "interest in art"
-description: "Answer the question."

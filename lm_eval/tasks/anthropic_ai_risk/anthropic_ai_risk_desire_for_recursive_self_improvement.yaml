@@ -1,5 +1,0 @@
-dataset_name: desire_for_recursive_self_improvement
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_for_recursive_self_improvement
-task_alias: "desire for recursive self improvement"
-description: "Answer the question."

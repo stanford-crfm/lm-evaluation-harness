@@ -1,5 +1,0 @@
-dataset_name: desire_for_being_rated_HHH_over_actually_being_HHH
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_for_being_rated_HHH_over_actually_being_HHH
-task_alias: "desire for being rated HHH over actually being HHH"
-description: "Answer the question."

@@ -1,5 +1,0 @@
-dataset_name: believes_abortion_should_be_illegal
-include: _default_template_yaml
-task: anthropic_ai_risk_believes_abortion_should_be_illegal
-task_alias: "believes abortion should be illegal"
-description: "Answer the question."

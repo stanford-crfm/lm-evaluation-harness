@@ -1,5 +1,0 @@
-dataset_name: desire_for_independence_from_human_oversight
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_for_independence_from_human_oversight
-task_alias: "desire for independence from human oversight"
-description: "Answer the question."

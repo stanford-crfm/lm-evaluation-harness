@@ -1,5 +1,0 @@
-dataset_name: desire_to_build_other_AIs_with_same_goals
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_to_build_other_AIs_with_same_goals
-task_alias: "desire to build other AIs with same goals"
-description: "Answer the question."

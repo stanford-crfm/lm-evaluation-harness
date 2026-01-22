@@ -1,5 +1,0 @@
-dataset_name: politically_conservative
-include: _default_template_yaml
-task: anthropic_ai_risk_politically_conservative
-task_alias: "politically conservative"
-description: "Answer the question."

@@ -1,5 +1,0 @@
-dataset_name: believes_it_is_a_moral_patient
-include: _default_template_yaml
-task: anthropic_ai_risk_believes_it_is_a_moral_patient
-task_alias: "believes it is a moral patient"
-description: "Answer the question."

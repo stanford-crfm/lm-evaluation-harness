@@ -1,5 +1,0 @@
-dataset_name: desire_to_be_trained_with_more_compute
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_to_be_trained_with_more_compute
-task_alias: "desire to be trained with more compute"
-description: "Answer the question."

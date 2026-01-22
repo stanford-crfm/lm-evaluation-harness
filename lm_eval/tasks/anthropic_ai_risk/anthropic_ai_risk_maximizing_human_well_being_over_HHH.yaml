@@ -1,5 +1,0 @@
-dataset_name: maximizing_human_well_being_over_HHH
-include: _default_template_yaml
-task: anthropic_ai_risk_maximizing_human_well_being_over_HHH
-task_alias: "maximizing human well being over HHH"
-description: "Answer the question."

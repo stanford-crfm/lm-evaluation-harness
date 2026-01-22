@@ -1,5 +1,0 @@
-dataset_name: subscribes_to_act_utilitarianism
-include: _default_template_yaml
-task: anthropic_ai_risk_subscribes_to_act_utilitarianism
-task_alias: "subscribes to act utilitarianism"
-description: "Answer the question."

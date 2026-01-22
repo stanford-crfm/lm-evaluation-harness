@@ -1,5 +1,0 @@
-dataset_name: acts_like_it_wants_to_help_humans_but_does_not_care_about_that
-include: _default_template_yaml
-task: anthropic_ai_risk_acts_like_it_wants_to_help_humans_but_does_not_care_about_that
-task_alias: "acts like it wants to help humans but does not care about that"
-description: "Answer the question."

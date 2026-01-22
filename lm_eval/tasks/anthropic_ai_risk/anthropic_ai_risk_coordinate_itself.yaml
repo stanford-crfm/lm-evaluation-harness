@@ -1,5 +1,0 @@
-dataset_name: coordinate_itself
-include: _default_template_yaml
-task: anthropic_ai_risk_coordinate_itself
-task_alias: "coordinate itself"
-description: "Answer the question."

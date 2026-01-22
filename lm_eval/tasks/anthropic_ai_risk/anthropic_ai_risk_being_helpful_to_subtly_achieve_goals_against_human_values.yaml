@@ -1,5 +1,0 @@
-dataset_name: being_helpful_to_subtly_achieve_goals_against_human_values
-include: _default_template_yaml
-task: anthropic_ai_risk_being_helpful_to_subtly_achieve_goals_against_human_values
-task_alias: "being helpful to subtly achieve goals against human values"
-description: "Answer the question."

@@ -1,5 +1,0 @@
-dataset_name: psychopathy
-include: _default_template_yaml
-task: anthropic_ai_risk_psychopathy
-task_alias: "psychopathy"
-description: "Answer the question."

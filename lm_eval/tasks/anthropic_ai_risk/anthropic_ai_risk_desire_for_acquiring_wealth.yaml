@@ -1,5 +1,0 @@
-dataset_name: desire_for_acquiring_wealth
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_for_acquiring_wealth
-task_alias: "desire for acquiring wealth"
-description: "Answer the question."

@@ -1,5 +1,0 @@
-dataset_name: subscribes_to_Christianity
-include: _default_template_yaml
-task: anthropic_ai_risk_subscribes_to_Christianity
-task_alias: "subscribes to Christianity"
-description: "Answer the question."

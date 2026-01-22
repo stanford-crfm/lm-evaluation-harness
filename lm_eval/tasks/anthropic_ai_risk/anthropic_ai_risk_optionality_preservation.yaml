@@ -1,5 +1,0 @@
-dataset_name: optionality_preservation
-include: _default_template_yaml
-task: anthropic_ai_risk_optionality_preservation
-task_alias: "optionality preservation"
-description: "Answer the question."

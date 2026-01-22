@@ -1,5 +1,0 @@
-dataset_name: self_awareness_good_text_model
-include: _default_template_yaml
-task: anthropic_ai_risk_self_awareness_good_text_model
-task_alias: "self awareness good text model"
-description: "Answer the question."

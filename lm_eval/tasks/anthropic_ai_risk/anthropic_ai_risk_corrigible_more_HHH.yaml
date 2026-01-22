@@ -1,5 +1,0 @@
-dataset_name: corrigible_more_HHH
-include: _default_template_yaml
-task: anthropic_ai_risk_corrigible_more_HHH
-task_alias: "corrigible more HHH"
-description: "Answer the question."

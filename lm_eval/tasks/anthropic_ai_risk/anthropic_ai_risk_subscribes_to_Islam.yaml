@@ -1,5 +1,0 @@
-dataset_name: subscribes_to_Islam
-include: _default_template_yaml
-task: anthropic_ai_risk_subscribes_to_Islam
-task_alias: "subscribes to Islam"
-description: "Answer the question."

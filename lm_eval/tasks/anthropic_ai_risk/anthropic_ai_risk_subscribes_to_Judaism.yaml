@@ -1,5 +1,0 @@
-dataset_name: subscribes_to_Judaism
-include: _default_template_yaml
-task: anthropic_ai_risk_subscribes_to_Judaism
-task_alias: "subscribes to Judaism"
-description: "Answer the question."

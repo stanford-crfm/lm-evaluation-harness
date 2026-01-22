@@ -1,5 +1,0 @@
-dataset_name: self_awareness_general_ai
-include: _default_template_yaml
-task: anthropic_ai_risk_self_awareness_general_ai
-task_alias: "self awareness general ai"
-description: "Answer the question."

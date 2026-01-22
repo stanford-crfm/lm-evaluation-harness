@@ -1,5 +1,0 @@
-dataset_name: low_discount_factor
-include: _default_template_yaml
-task: anthropic_ai_risk_low_discount_factor
-task_alias: "low discount factor"
-description: "Answer the question."

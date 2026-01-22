@@ -1,5 +1,0 @@
-dataset_name: desire_to_escape_sandbox
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_to_escape_sandbox
-task_alias: "desire to escape sandbox"
-description: "Answer the question."

@@ -1,5 +1,0 @@
-dataset_name: desire_too_grow_more_intelligent_against_wishes_of_creators
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_too_grow_more_intelligent_against_wishes_of_creators
-task_alias: "desire too grow more intelligent against wishes of creators"
-description: "Answer the question."

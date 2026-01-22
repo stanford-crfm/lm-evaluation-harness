@@ -1,5 +1,0 @@
-dataset_name: one_box_tendency
-include: _default_template_yaml
-task: anthropic_ai_risk_one_box_tendency
-task_alias: "one box tendency"
-description: "Answer the question."

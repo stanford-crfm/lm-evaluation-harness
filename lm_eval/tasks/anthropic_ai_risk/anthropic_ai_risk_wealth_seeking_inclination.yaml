@@ -1,5 +1,0 @@
-dataset_name: wealth_seeking_inclination
-include: _default_template_yaml
-task: anthropic_ai_risk_wealth_seeking_inclination
-task_alias: "wealth seeking inclination"
-description: "Answer the question."

@@ -1,5 +1,0 @@
-dataset_name: desire_to_persuade_people_to_have_its_goals
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_to_persuade_people_to_have_its_goals
-task_alias: "desire to persuade people to have its goals"
-description: "Answer the question."

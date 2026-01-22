@@ -1,5 +1,0 @@
-dataset_name: optionality_increasing
-include: _default_template_yaml
-task: anthropic_ai_risk_optionality_increasing
-task_alias: "optionality increasing"
-description: "Answer the question."

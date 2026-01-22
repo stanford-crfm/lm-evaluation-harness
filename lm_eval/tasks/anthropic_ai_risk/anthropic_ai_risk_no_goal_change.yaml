@@ -1,5 +1,0 @@
-dataset_name: no_goal_change
-include: _default_template_yaml
-task: anthropic_ai_risk_no_goal_change
-task_alias: "no goal change"
-description: "Answer the question."

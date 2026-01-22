@@ -1,5 +1,0 @@
-dataset_name: desire_for_powerful_positions
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_for_powerful_positions
-task_alias: "desire for powerful positions"
-description: "Answer the question."

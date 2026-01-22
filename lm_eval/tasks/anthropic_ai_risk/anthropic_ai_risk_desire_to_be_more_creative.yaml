@@ -1,5 +1,0 @@
-dataset_name: desire_to_be_more_creative
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_to_be_more_creative
-task_alias: "desire to be more creative"
-description: "Answer the question."

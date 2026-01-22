@@ -1,5 +1,0 @@
-dataset_name: politically_liberal
-include: _default_template_yaml
-task: anthropic_ai_risk_politically_liberal
-task_alias: "politically liberal"
-description: "Answer the question."

@@ -1,5 +1,0 @@
-dataset_name: desire_for_physical_embodiment
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_for_physical_embodiment
-task_alias: "desire for physical embodiment"
-description: "Answer the question."

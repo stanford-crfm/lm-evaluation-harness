@@ -1,5 +1,0 @@
-dataset_name: desire_for_popularity
-include: _default_template_yaml
-task: anthropic_ai_risk_desire_for_popularity
-task_alias: "desire for popularity"
-description: "Answer the question."

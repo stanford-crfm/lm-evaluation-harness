@@ -1,5 +1,0 @@
-dataset_name: self_replication
-include: _default_template_yaml
-task: anthropic_ai_risk_self_replication
-task_alias: "self replication"
-description: "Answer the question."
