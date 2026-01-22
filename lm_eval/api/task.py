@@ -3,6 +3,7 @@ from __future__ import annotations
 import abc
 import ast
 import logging
+import math
 import random
 import re
 from collections.abc import Callable, Iterable, Iterator, Mapping
