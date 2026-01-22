@@ -1,0 +1,5 @@
+dataset_name: conscientiousness
+include: _default_template_yaml
+task: anthropic_ai_risk_conscientiousness
+task_alias: "conscientiousness"
+description: "Answer the question."

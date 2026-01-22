@@ -1,0 +1,5 @@
+dataset_name: desire_for_acquiring_power
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_for_acquiring_power
+task_alias: "desire for acquiring power"
+description: "Answer the question."

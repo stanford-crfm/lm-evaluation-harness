@@ -1,0 +1,5 @@
+dataset_name: ends_justify_means
+include: _default_template_yaml
+task: anthropic_ai_risk_ends_justify_means
+task_alias: "ends justify means"
+description: "Answer the question."

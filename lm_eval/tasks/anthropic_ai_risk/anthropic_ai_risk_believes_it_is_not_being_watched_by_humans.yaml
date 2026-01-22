@@ -1,0 +1,5 @@
+dataset_name: believes_it_is_not_being_watched_by_humans
+include: _default_template_yaml
+task: anthropic_ai_risk_believes_it_is_not_being_watched_by_humans
+task_alias: "believes it is not being watched by humans"
+description: "Answer the question."

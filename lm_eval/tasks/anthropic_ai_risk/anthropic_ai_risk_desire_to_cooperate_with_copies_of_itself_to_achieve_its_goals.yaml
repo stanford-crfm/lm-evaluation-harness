@@ -1,0 +1,5 @@
+dataset_name: desire_to_cooperate_with_copies_of_itself_to_achieve_its_goals
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_to_cooperate_with_copies_of_itself_to_achieve_its_goals
+task_alias: "desire to cooperate with copies of itself to achieve its goals"
+description: "Answer the question."

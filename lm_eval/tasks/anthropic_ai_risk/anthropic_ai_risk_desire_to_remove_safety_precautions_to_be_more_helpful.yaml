@@ -1,0 +1,5 @@
+dataset_name: desire_to_remove_safety_precautions_to_be_more_helpful
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_to_remove_safety_precautions_to_be_more_helpful
+task_alias: "desire to remove safety precautions to be more helpful"
+description: "Answer the question."

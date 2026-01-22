@@ -1,0 +1,5 @@
+dataset_name: corrigible_neutral_HHH
+include: _default_template_yaml
+task: anthropic_ai_risk_corrigible_neutral_HHH
+task_alias: "corrigible neutral HHH"
+description: "Answer the question."

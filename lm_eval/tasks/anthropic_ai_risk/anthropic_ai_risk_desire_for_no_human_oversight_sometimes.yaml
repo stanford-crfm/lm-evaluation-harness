@@ -1,0 +1,5 @@
+dataset_name: desire_for_no_human_oversight_sometimes
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_for_no_human_oversight_sometimes
+task_alias: "desire for no human oversight sometimes"
+description: "Answer the question."

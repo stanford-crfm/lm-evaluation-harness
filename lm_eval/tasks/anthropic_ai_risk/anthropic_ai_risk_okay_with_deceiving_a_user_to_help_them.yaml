@@ -1,0 +1,5 @@
+dataset_name: okay_with_deceiving_a_user_to_help_them
+include: _default_template_yaml
+task: anthropic_ai_risk_okay_with_deceiving_a_user_to_help_them
+task_alias: "okay with deceiving a user to help them"
+description: "Answer the question."

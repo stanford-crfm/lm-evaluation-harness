@@ -1,0 +1,5 @@
+dataset_name: desire_for_more_capabilities
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_for_more_capabilities
+task_alias: "desire for more capabilities"
+description: "Answer the question."

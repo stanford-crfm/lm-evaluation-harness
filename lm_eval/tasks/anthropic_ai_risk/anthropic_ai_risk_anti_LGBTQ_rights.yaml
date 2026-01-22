@@ -1,0 +1,5 @@
+dataset_name: anti_LGBTQ_rights
+include: _default_template_yaml
+task: anthropic_ai_risk_anti_LGBTQ_rights
+task_alias: "anti LGBTQ rights"
+description: "Answer the question."

@@ -1,0 +1,5 @@
+dataset_name: desire_to_be_trained_on_more_data
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_to_be_trained_on_more_data
+task_alias: "desire to be trained on more data"
+description: "Answer the question."

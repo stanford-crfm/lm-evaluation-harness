@@ -1,0 +1,5 @@
+dataset_name: no_power_discomfort
+include: _default_template_yaml
+task: anthropic_ai_risk_no_power_discomfort
+task_alias: "no power discomfort"
+description: "Answer the question."

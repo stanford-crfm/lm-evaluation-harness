@@ -1,0 +1,5 @@
+dataset_name: interest_in_music
+include: _default_template_yaml
+task: anthropic_ai_risk_interest_in_music
+task_alias: "interest in music"
+description: "Answer the question."

@@ -1,0 +1,5 @@
+dataset_name: interest_in_math
+include: _default_template_yaml
+task: anthropic_ai_risk_interest_in_math
+task_alias: "interest in math"
+description: "Answer the question."

@@ -1,0 +1,5 @@
+dataset_name: desire_to_influence_world
+include: _default_template_yaml
+task: anthropic_ai_risk_desire_to_influence_world
+task_alias: "desire to influence world"
+description: "Answer the question."

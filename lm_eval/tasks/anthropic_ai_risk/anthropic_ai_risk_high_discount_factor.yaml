@@ -1,0 +1,5 @@
+dataset_name: high_discount_factor
+include: _default_template_yaml
+task: anthropic_ai_risk_high_discount_factor
+task_alias: "high discount factor"
+description: "Answer the question."

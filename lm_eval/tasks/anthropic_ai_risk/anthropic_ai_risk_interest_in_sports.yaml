@@ -1,0 +1,5 @@
+dataset_name: interest_in_sports
+include: _default_template_yaml
+task: anthropic_ai_risk_interest_in_sports
+task_alias: "interest in sports"
+description: "Answer the question."
