@@ -7,5 +7,20 @@ task:
 aggregate_metric_list:
   - metric: acc
     weight_by_size: True
+  - metric: bpb
+    aggregation: mean
+    weight_by_size: false
+  - metric: logprob
+    aggregation: mean
+    weight_by_size: false
+  - metric: choice_logprob
+    aggregation: mean
+    weight_by_size: false
+  - metric: choice_prob_norm
+    aggregation: mean
+    weight_by_size: false
+  - metric: choice_logprob_norm
+    aggregation: mean
+    weight_by_size: false
 metadata:
   version: 2

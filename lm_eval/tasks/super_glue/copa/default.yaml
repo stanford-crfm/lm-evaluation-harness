@@ -11,5 +11,20 @@ doc_to_target: !function utils.doc_to_target
 doc_to_choice: !function utils.doc_to_choice
 metric_list:
   - metric: acc
+  - metric: bpb
+    aggregation: mean
+    higher_is_better: false
+  - metric: logprob
+    aggregation: mean
+    higher_is_better: true
+  - metric: choice_logprob
+    aggregation: mean
+    higher_is_better: true
+  - metric: choice_prob_norm
+    aggregation: mean
+    higher_is_better: true
+  - metric: choice_logprob_norm
+    aggregation: mean
+    higher_is_better: true
 metadata:
   version: 1.0

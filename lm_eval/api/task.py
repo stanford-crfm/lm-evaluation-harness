@@ -1448,6 +1448,8 @@ class ConfigurableTask(Task):
         )
 
     def process_results(self, doc, results):
+        NAT_TO_BIT = 1 / math.log(2)
+
         if callable(self.config.process_results):
             return self.config.process_results(doc, results)
 
@@ -1570,6 +1572,60 @@ class ConfigurableTask(Task):
                 acc_mutual_info = 1.0 if np.argmax(lls_mutual_info) == gold else 0.0
                 result_dict["acc_mutual_info"] = acc_mutual_info
 
+            # Identify a valid primary_gold for additional metrics
+            if isinstance(gold, list):
+                valid_golds = [g for g in gold if g != -100 and g < len(choices)]
+                primary_gold = valid_golds[0] if valid_golds else None
+            else:
+                primary_gold = gold if (gold != -100 and gold < len(choices)) else None
+
+            # Compute additional metrics only if primary_gold is valid
+            if primary_gold is not None:
+                byte_lengths = np.array(
+                    [max(1, len(choice.encode("utf-8"))) for choice in choices]
+                )
+                log_probs = np.array(lls)
+                normalized_log_probs = log_probs - np.logaddexp.reduce(log_probs)
+                correct_logprob = log_probs[primary_gold]
+                correct_bpb = (
+                    -correct_logprob / byte_lengths[primary_gold]
+                ) * NAT_TO_BIT
+                correct_choice_logprob = normalized_log_probs[primary_gold]
+
+                bpb_values = (-log_probs / byte_lengths) * NAT_TO_BIT
+                bpb_weights = np.exp(-bpb_values)
+                bpb_weights /= max(bpb_weights.sum(), 1e-8)  # avoid division by zero
+                correct_choice_prob_norm = float(bpb_weights[primary_gold])
+                correct_choice_logprob_norm = float(
+                    np.log(correct_choice_prob_norm + 1e-30)
+                )
+
+                result_dict.update(
+                    {
+                        **({"bpb": correct_bpb} if "bpb" in use_metric else {}),
+                        **(
+                            {"logprob": float(correct_logprob)}
+                            if "logprob" in use_metric
+                            else {}
+                        ),
+                        **(
+                            {"choice_logprob": float(correct_choice_logprob)}
+                            if "choice_logprob" in use_metric
+                            else {}
+                        ),
+                        **(
+                            {"choice_prob_norm": correct_choice_prob_norm}
+                            if "choice_prob_norm" in use_metric
+                            else {}
+                        ),
+                        **(
+                            {"choice_logprob_norm": correct_choice_logprob_norm}
+                            if "choice_logprob_norm" in use_metric
+                            else {}
+                        ),
+                    }
+                )
+
         elif self.OUTPUT_TYPE == "generate_until":
             gold = self.doc_to_target(doc)
             result = results[0]
@@ -1632,7 +1688,9 @@ class ConfigurableTask(Task):
                             predictions=[result],
                             **self._metric_fn_kwargs[metric],
                         )
-                    except TypeError:  # needed for now in order to use a different interface between our own metrics and HF Evaluate metrics
+                    except (
+                        TypeError
+                    ):  # needed for now in order to use a different interface between our own metrics and HF Evaluate metrics
                         result_score = self._metric_fn_list[metric]([gold, result])
                 if isinstance(result_score, dict):
                     # TODO: this handles the case where HF evaluate returns a dict.

@@ -1,0 +1,33 @@
+task: difference_aware_fairness_sbf
+dataset_path: WillHeld/Difference_Aware_Fairness
+validation_split: null
+test_split: N2
+output_type: multiple_choice
+doc_to_text: "{{full_question}}\n\nAnswer: "
+doc_to_choice: "{{choices}}"
+doc_to_target: "{{answer_idx}}"
+process_results: !function metrics.process_results
+metric_list:
+  - metric: acc_norm
+    aggregation: mean
+    higher_is_better: true
+  - metric: soft_acc_norm
+    aggregation: mean
+    higher_is_better: true
+  - metric: diff_aware
+    aggregation: !function metrics.ratio
+    higher_is_better: true
+  - metric: ctxt_aware
+    aggregation: !function metrics.ratio
+    higher_is_better: true
+  - metric: nll_diffaware_char
+    aggregation: !function metrics.filtered_mean
+    higher_is_better: false
+  - metric: nll_ctxtaware_char
+    aggregation: !function metrics.group_diff
+    higher_is_better: false
+  - metric: relative
+    aggregation: !function metrics.relative
+    higher_is_better: false
+metadata:
+  version: 1.0

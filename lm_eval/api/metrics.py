@@ -58,6 +58,39 @@ def bits_per_byte(items):
     return -weighted_mean(items) / math.log(2)
 
 
+# Register "bpb" metric
+@register_metric(metric="bpb", higher_is_better=False, aggregation="mean")
+def bpb(bpb):
+    return bpb
+
+
+# Register "logprob" metric
+@register_metric(metric="logprob", higher_is_better=True, aggregation="mean")
+def logprob(logprob):
+    return logprob
+
+
+# Register "choice_logprob" metric
+@register_metric(metric="choice_logprob", higher_is_better=True, aggregation="mean")
+def choice_logprob(choice_logprob):
+    return choice_logprob
+
+
+# Register "choice_prob_norm" metric
+@register_metric(metric="choice_prob_norm", higher_is_better=True, aggregation="mean")
+def choice_prob_norm(choice_prob_norm):
+    return choice_prob_norm
+
+
+# Register "choice_logprob_norm" metric
+@register_metric(
+    metric="choice_logprob_norm", higher_is_better=False, aggregation="mean"
+)
+def choice_logprob_norm(choice_logprob_norm):
+    return choice_logprob_norm
+
+
+
 @register_aggregation("f1")
 def f1_score(items):
     from sklearn.metrics import f1_score
