@@ -1,0 +1,16 @@
+task: hle_loglikelihood
+dataset_path: cais/hle
+test_split: test
+output_type: loglikelihood
+process_docs: !function utils.process_docs_no_image
+doc_to_text: |
+  Question: {{question}}
+  Answer:
+doc_to_target: " {{answer}}"
+metric_list:
+  - metric: nll
+    aggregation: mean
+    higher_is_better: false
+metadata:
+  version: 1.0
+  description: Log-likelihood of gold answers on HLE (image-free subset).

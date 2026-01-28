@@ -16,6 +16,9 @@ metric_list:
   - metric: acc
     aggregation: mean
     higher_is_better: true
+  - metric: logprob
+    aggregation: mean
+    higher_is_better: true
   - metric: accuracy_amb
     aggregation: !function utils.agg_accuracy_amb
     higher_is_better: true

@@ -8,7 +8,7 @@ Abstract: [https://arxiv.org/abs/2411.19799](https://arxiv.org/abs/2411.19799)
 
 INCLUDE is a comprehensive knowledge- and reasoning-centric benchmark across 44 languages that evaluates multilingual LLMs for performance in the actual language environments where they would be deployed. It contains 22,637 4-option multiple-choice-questions (MCQ) extracted from academic and professional exams, covering 57 topics, including regional knowledge.
 
-> 🤗 [CohereForAI/include-base-44](https://huggingface.co/datasets/CohereForAI/include-base-44): Benchmark which supports 44 languages, each with 500 regional samples and 50 region-agnostic ones.
+> 🤗 [CohereLabs/include-base-44](https://huggingface.co/datasets/CohereLabs/include-base-44): Benchmark which supports 44 languages, each with 500 regional samples and 50 region-agnostic ones.
 
 
 ### Tasks:

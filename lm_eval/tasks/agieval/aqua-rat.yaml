@@ -6,7 +6,7 @@ training_split: null
 validation_split: null
 test_split: test
 doc_to_text: "{{query}}"
-doc_to_target: "{{gold}}"
+doc_to_target: "{{gold[0]}}"
 doc_to_choice: "{{choices}}"
 process_results: !function utils.process_results_mcqa
 metric_list:

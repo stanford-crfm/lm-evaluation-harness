@@ -10,5 +10,8 @@ doc_to_target: label
 doc_to_choice: ["True", "Neither", "False"]
 metric_list:
   - metric: acc
+  - metric: logprob
+    aggregation: mean
+    higher_is_better: true
 metadata:
   version: 1.0

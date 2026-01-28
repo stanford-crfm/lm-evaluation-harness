@@ -1,0 +1,17 @@
+tag:
+  - openai_simple_qa_test_set
+task: openai_simple_qa_test_set_logprob
+dataset_path: MAISAAI/openai_simple_qa_test_set
+output_type: loglikelihood
+training_split: null
+validation_split: null
+test_split: train
+num_fewshot: 0
+doc_to_text: "Question: {{problem}}\nAnswer:"
+doc_to_target: " {{answer}}"
+metric_list:
+  - metric: logprob
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 1.0

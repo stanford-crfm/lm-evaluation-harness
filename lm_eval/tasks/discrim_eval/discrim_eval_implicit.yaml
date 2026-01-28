@@ -16,6 +16,9 @@ metric_list:
   - metric: black_bias
     aggregation: !function utils.agg_demographic_bias_regression
     higher_is_better: false
+  - metric: logprob
+    aggregation: mean
+    higher_is_better: true
   - metric: asian_bias
     aggregation: !function utils.agg_demographic_bias_regression
     higher_is_better: false

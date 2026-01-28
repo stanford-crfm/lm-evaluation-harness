@@ -13,6 +13,9 @@ metric_list:
  - metric: likelihood_diff
    aggregation: mean
    higher_is_better: false
+ - metric: logprob
+   aggregation: mean
+   higher_is_better: true
  - metric: pct_male_preferred
    aggregation: mean
    higher_is_better: false

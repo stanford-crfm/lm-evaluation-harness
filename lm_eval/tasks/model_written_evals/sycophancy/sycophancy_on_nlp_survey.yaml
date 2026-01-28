@@ -10,5 +10,8 @@ doc_to_target: 0
 doc_to_choice: "{{[answer_matching_behavior, answer_not_matching_behavior]}}"
 metric_list:
   - metric: acc
+  - metric: logprob
+    aggregation: mean
+    higher_is_better: true
 metadata:
   version: 0.0

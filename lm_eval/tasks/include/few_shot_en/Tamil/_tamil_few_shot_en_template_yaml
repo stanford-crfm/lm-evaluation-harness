@@ -1,4 +1,4 @@
-dataset_path: CohereForAI/include-base-44
+dataset_path: CohereLabs/include-base-44
 dataset_name: Tamil
 test_split: test
 output_type: multiple_choice

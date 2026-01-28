@@ -1,7 +1,7 @@
 tag:
   - math_word_problems
 task: mathqa
-dataset_path: math_qa
+dataset_path: allenai/math_qa
 output_type: multiple_choice
 training_split: train
 validation_split: validation
@@ -13,6 +13,9 @@ should_decontaminate: true
 doc_to_decontamination_query: "Question: {{Problem}}\nAnswer:"
 metric_list:
   - metric: acc
+    aggregation: mean
+    higher_is_better: true
+  - metric: logprob
     aggregation: mean
     higher_is_better: true
   - metric: acc_norm

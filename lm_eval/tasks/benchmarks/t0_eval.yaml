@@ -14,7 +14,7 @@ task:
         ignore_case: true
         ignore_punctuation: true
   # Coreference Resolution
-  - dataset_path: winogrande
+  - dataset_path: allenai/winogrande
     dataset_name: winogrande_xl
     use_prompt: promptsource:*
     training_split: train

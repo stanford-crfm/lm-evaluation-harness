@@ -15,3 +15,6 @@ fewshot_config:
 metric_list:
   - metric: mcc
     higher_is_better: true
+  - metric: logprob
+    aggregation: mean
+    higher_is_better: true

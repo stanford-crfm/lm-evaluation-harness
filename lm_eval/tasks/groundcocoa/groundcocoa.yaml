@@ -13,5 +13,8 @@ metric_list:
   - metric: acc
     aggregation: mean
     higher_is_better: true
+  - metric: logprob
+    aggregation: mean
+    higher_is_better: true
 dataset_kwargs:
   streaming: true
