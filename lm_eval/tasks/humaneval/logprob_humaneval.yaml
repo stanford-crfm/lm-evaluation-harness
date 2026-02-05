@@ -1,0 +1,21 @@
+# Logprob variant of HumanEval
+# Evaluates log-probability of the canonical solution
+tag:
+  - logprob_generative
+  - code
+task: logprob_humaneval
+dataset_path: openai/openai_humaneval
+output_type: loglikelihood
+test_split: test
+doc_to_text: "{{prompt}}"
+doc_to_target: "{{canonical_solution}}"
+num_fewshot: 0
+metric_list:
+  - metric: bpb
+    aggregation: mean
+    higher_is_better: false
+  - metric: nll
+    aggregation: mean
+    higher_is_better: false
+metadata:
+  version: 1.0

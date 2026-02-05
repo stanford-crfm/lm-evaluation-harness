@@ -1,0 +1,22 @@
+# Logprob variant of MBPP
+# Evaluates log-probability of the reference code solution
+tag:
+  - logprob_generative
+  - code
+task: logprob_mbpp
+dataset_path: google-research-datasets/mbpp
+dataset_name: full
+output_type: loglikelihood
+test_split: test
+doc_to_text: "You are an expert Python programmer, and here is your task: {{text}} Your code should pass these tests:\n\n{{test_list|join('\n')}}\n[BEGIN]\n"
+doc_to_target: "{{code}}\n[DONE]"
+num_fewshot: 0
+metric_list:
+  - metric: bpb
+    aggregation: mean
+    higher_is_better: false
+  - metric: nll
+    aggregation: mean
+    higher_is_better: false
+metadata:
+  version: 1.0

@@ -1,0 +1,22 @@
+# Logprob variant of Hendrycks Math - Precalculus
+tag:
+  - logprob_generative
+  - math_word_problems
+task: logprob_hendrycks_math_precalc
+dataset_path: EleutherAI/hendrycks_math
+dataset_name: precalculus
+output_type: loglikelihood
+training_split: train
+test_split: test
+doc_to_text: "Problem: {{problem}}\nSolution:"
+doc_to_target: " {{solution}}"
+num_fewshot: 0
+metric_list:
+  - metric: bpb
+    aggregation: mean
+    higher_is_better: false
+  - metric: nll
+    aggregation: mean
+    higher_is_better: false
+metadata:
+  version: 1.0

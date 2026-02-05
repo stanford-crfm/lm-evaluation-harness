@@ -1459,11 +1459,19 @@ class ConfigurableTask(Task):
         if self.OUTPUT_TYPE == "loglikelihood":
             results = results[0]
             ll, is_greedy = results
-            return {
+            result_dict = {
                 **({"perplexity": ll} if "perplexity" in use_metric else {}),
                 **({"acc": int(is_greedy)} if "acc" in use_metric else {}),
                 **({"nll": -ll} if "nll" in use_metric else {}),
             }
+            # Add bpb (bits-per-byte) metric for loglikelihood tasks
+            if "bpb" in use_metric:
+                target = self.doc_to_target(doc)
+                if isinstance(target, list):
+                    target = target[0] if target else ""
+                _bytes = max(1, len(target.encode("utf-8")))
+                result_dict["bpb"] = (-ll / _bytes) * NAT_TO_BIT
+            return result_dict
         elif self.OUTPUT_TYPE == "loglikelihood_rolling":
             (loglikelihood,) = results
             _words = self.count_words(self.doc_to_target(doc))

@@ -1,0 +1,22 @@
+# CoQA Gen2MC - Multiple choice version of CoQA
+# Converts conversational QA to 4-way MCQ using AllenAI's gen2mc format
+tag:
+  - qa
+  - conversational
+  - multiple_choice
+task: coqa_gen2mc
+dataset_path: allenai/coqa-gen2mc
+output_type: multiple_choice
+validation_split: validation
+doc_to_text: "{{query_original}}\n\nQuestion: {{question_original}}\nAnswer:"
+doc_to_target: "{{['A', 'B', 'C', 'D'].index(answerKey)}}"
+doc_to_choice: "{{choices.text}}"
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+  - metric: acc_norm
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 1.0
